@@ -7,7 +7,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Navbar } from "@/components/Navbar";
 import { Hero } from "@/components/Hero";
 import { TrustStrip } from "@/components/TrustStrip";
-import { CountryFlagMarquee } from "@/components/CountryFlagMarquee";
 import { CountriesSection } from "@/components/CountriesSection";
 import { ServicesSection } from "@/components/ServicesSection";
 import { IndustrySection } from "@/components/IndustrySection";
@@ -94,7 +93,6 @@ export default function Home() {
               {/* Main Content Sections */}
               <Hero />
               <TrustStrip />
-              <CountryFlagMarquee />
               <CountriesSection />
               <ServicesSection />
               <IndustrySection />

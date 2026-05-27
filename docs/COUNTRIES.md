@@ -6,7 +6,7 @@ This document covers the centralized database structure for target recruitment c
 
 ## 🗺️ Centralized Country Database
 
-To keep code robust, modular, and maintainable, all data about destination countries is stored centrally in [countries.ts](file:///c:/Users/pragy/OneDrive/Desktop/TrendyFortune/src/data/countries.ts). This avoids duplication across the Flag Marquee and the Country Grid sections.
+To keep code robust, modular, and maintainable, all data about destination countries is stored centrally in [countries.ts](file:///c:/Users/pragy/OneDrive/Desktop/TrendyFortune/src/data/countries.ts). This avoids duplication across sections.
 
 ### The Country Schema
 Every country is defined using the strict TypeScript interface `CountryData`:
@@ -47,16 +47,17 @@ Currently, Trendy Fortune manages job streams across **14 key destination countr
 
 ---
 
-## 🎠 Floating Country Flag Marquee Component
+## 🎠 Floating Country Flag Marquee section
 
-To capture candidates' attention, the homepage displays a **floating flag marquee** using [CountryFlagMarquee.tsx](file:///c:/Users/pragy/OneDrive/Desktop/TrendyFortune/src/components/CountryFlagMarquee.tsx).
+To keep the website uncluttered and visually engaging, the static "International Locations We Recruit For" grid and the floating flag strip are unified under a single section called **[CountriesSection.tsx](file:///c:/Users/pragy/OneDrive/Desktop/TrendyFortune/src/components/CountriesSection.tsx)**. This displays high-fidelity, spacious cards that float horizontally using a zero-dependency CSS marquee loop.
 
 ### 1. Architectural Guidelines & Best Practices
 - **Strict CSS-Only Loop**: To guarantee that low-end Android mobile phones and high-latency rural connections run smoothly, the animation utilizes **zero JavaScript timers**. The slide mechanism is fully powered by native CSS `@keyframes marquee` transformations inside [globals.css](file:///c:/Users/pragy/OneDrive/Desktop/TrendyFortune/src/app/globals.css).
 - **Infinite Carousel Illusion**: To prevent any blank gaps, the list of 14 countries is **duplicated inside the component** (`[...CENTRAL_COUNTRIES, ...CENTRAL_COUNTRIES]`). This creates a seamless, continuous flow when the position resets.
+- **High-Fidelity Cards**: Cards inherit the larger card size (`w-[320px]`), padding (`p-6`), rounded corners (`rounded-2xl`), shadow transitions (`hover-card`), dynamic popular job tags, and clean layout of the former premium static section.
 - **Micro-Animations on Interaction**:
   - **Pause on Hover**: Hovering over the marquee card container sets `animation-play-state: paused` to let users read card details easily.
-  - **Scale and Sheen**: Cards scale up gently on hover (`hover:scale-105`) with a premium golden ring shadow border.
+  - **Scale and Sheen**: Cards scale up gently on hover with a premium golden ring shadow border and green map pin hover highlights.
 
 ---
 
