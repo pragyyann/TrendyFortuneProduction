@@ -1,0 +1,109 @@
+{
+  "navbar": {
+    "home": "Home",
+    "jobs": "Jobs Abroad",
+    "services": "Services",
+    "employers": "For Employers",
+    "about": "About",
+    "contact": "Contact",
+    "applyNow": "Apply Now"
+  },
+  "hero": {
+    "badge": "Government Registered & ISO Certified Agency",
+    "title": "Your Trusted Gateway to Verified Overseas Jobs",
+    "subtitle": "Connecting skilled Indian manpower with certified employers across Europe, GCC, and Canada. Safe, legal, and transparent visa processing.",
+    "applyBtn": "Apply for Overseas Job",
+    "whatsappBtn": "Talk on WhatsApp",
+    "hireBtn": "Hire Manpower"
+  },
+  "trust": {
+    "item1_title": "Overseas Job Assistance",
+    "item1_desc": "Verified global career placements",
+    "item2_title": "Skilled Manpower Supply",
+    "item2_desc": "Vetted industrial & technical talent",
+    "item3_title": "Visa & Work Permit Support",
+    "item3_desc": "Error-free documentation & filings",
+    "item4_title": "Career Guidance",
+    "item4_desc": "Expert international market advice",
+    "item5_title": "Employer Hiring Support",
+    "item5_desc": "Scalable global workforce recruitment"
+  },
+  "countries": {
+    "tag": "Global Destinations",
+    "title": "International Locations We Recruit For",
+    "desc": "We partner with legally registered employers across major global destinations. Explore visa pathways and open vacancies waiting for you.",
+    "viewJobs": "View Jobs"
+  },
+  "services": {
+    "tag": "Our Services",
+    "title": "End-to-End Overseas Manpower Solutions",
+    "desc": "Whether you are a job seeker looking for opportunities abroad or an employer seeking skilled staff, we have you covered.",
+    "title_job_placement": "Overseas Job Placement",
+    "title_manpower_supply": "Manpower Supply",
+    "title_work_permit": "Work Permit Assistance",
+    "title_study_overseas": "Study Overseas",
+    "title_study_visa": "Study Visa Support",
+    "title_career_consulting": "Career Consulting",
+    "cta_manpower": "Request Manpower",
+    "cta_support": "Get Support"
+  },
+  "split": {
+    "seeker_title": "For Job Seekers",
+    "seeker_desc": "Find verified overseas career opportunities across Europe, the Gulf, and North America. Get absolute guidance on profiling, embassy interviews, visa paperwork, and logistics from start to finish.",
+    "seeker_btn": "Apply for Overseas Job",
+    "employer_title": "For Employers",
+    "employer_desc": "Source vetted, medically certified, and technically proficient manpower for your business requirements. We support high-volume deployments and specialized technical recruiting across core industries.",
+    "employer_btn": "Hire Manpower"
+  },
+  "howItWorks": {
+    "tag": "Our Process",
+    "title": "How to Get a Job Abroad",
+    "desc": "A simple, transparent, and completely legal 4-step process to land your dream job overseas safely.",
+    "step1_title": "Submit Your Details",
+    "step1_desc": "Fill out our quick lead form and upload your updated resume or share company manpower requests.",
+    "step2_title": "Profile Screening",
+    "step2_desc": "Our recruiting specialists match your qualifications with open international job requisitions.",
+    "step3_title": "Interview & Documentation",
+    "step3_desc": "Attend client interviews (virtual/face-to-face) and compile standard employment paperwork.",
+    "step4_title": "Visa Support & Deployment",
+    "step4_desc": "We handle work visa filings, medical tests, emigration clearance, and organize pre-departure briefings."
+  },
+  "forms": {
+    "tag": "Get Started",
+    "title": "Send Your Details Today",
+    "desc": "Ready for your next career move or looking to hire? Select the correct form and submit your request.",
+    "tab_seeker": "Job Seeker Form (For Candidates)",
+    "tab_employer": "Employer Inquiry (For Hiring)",
+    "fullName": "Your Full Name",
+    "phone": "Mobile Number",
+    "email": "Email Address",
+    "pref_country": "Preferred Country",
+    "job_category": "Job Category / Trade",
+    "exp": "Work Experience",
+    "cv_upload": "Upload Your CV / Resume (Optional)",
+    "message": "Additional Message",
+    "submit_seeker": "Apply for Overseas Job",
+    "submit_employer": "Submit Inquiry"
+  },
+  "contact": {
+    "tag": "Contact Us",
+    "title": "We Are Here to Help You",
+    "desc": "Have questions about work permits, study visas, or hiring? Get in touch with our experts directly.",
+    "office_title": "Official Contact Office",
+    "office_desc": "Visit our office or call us during business hours. Our career advisors are ready to evaluate your profile for free.",
+    "timings": "Office Timings",
+    "timings_desc": "Monday - Saturday: 10:00 AM to 6:30 PM",
+    "call": "Call Now",
+    "email": "Email Us",
+    "address": "Office Address",
+    "chat_wa": "Talk on WhatsApp"
+  },
+  "footer": {
+    "quickLinks": "Quick Links",
+    "rights": "All Rights Reserved."
+  },
+  "sticky": {
+    "call": "Call Now",
+    "whatsapp": "WhatsApp"
+  }
+}

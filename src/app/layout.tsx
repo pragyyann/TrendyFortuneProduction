@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import { Outfit, Inter } from "next/font/google";
+import { Outfit, Inter, Noto_Sans_Devanagari, Noto_Sans_Bengali, Noto_Sans_Tamil, Noto_Sans_Malayalam } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
+import { LanguageProvider } from "@/context/LanguageContext";
 import { CONTACT_INFO } from "@/constants";
 
 // Google Fonts Setup
@@ -16,6 +17,34 @@ const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
   weight: ["300", "400", "500", "600", "700", "800"],
+  display: "swap"
+});
+
+const deval = Noto_Sans_Devanagari({
+  subsets: ["devanagari"],
+  variable: "--font-devanagari",
+  weight: ["400", "500", "600", "700"],
+  display: "swap"
+});
+
+const bengal = Noto_Sans_Bengali({
+  subsets: ["bengali"],
+  variable: "--font-bengali",
+  weight: ["400", "500", "600", "700"],
+  display: "swap"
+});
+
+const tamilFont = Noto_Sans_Tamil({
+  subsets: ["tamil"],
+  variable: "--font-tamil",
+  weight: ["400", "500", "600", "700"],
+  display: "swap"
+});
+
+const malayalamFont = Noto_Sans_Malayalam({
+  subsets: ["malayalam"],
+  variable: "--font-malayalam",
+  weight: ["400", "500", "600", "700"],
   display: "swap"
 });
 
@@ -125,7 +154,7 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="en" className={`${outfit.variable} ${inter.variable} h-full antialiased`}>
+    <html lang="en" className={`${outfit.variable} ${inter.variable} ${deval.variable} ${bengal.variable} ${tamilFont.variable} ${malayalamFont.variable} h-full antialiased`}>
       <head>
         {/* Injecting JSON-LD script directly in the head element */}
         <script
@@ -134,7 +163,9 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-full flex flex-col bg-white">
-        <Providers>{children}</Providers>
+        <LanguageProvider>
+          <Providers>{children}</Providers>
+        </LanguageProvider>
       </body>
     </html>
   );

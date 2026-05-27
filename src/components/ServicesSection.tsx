@@ -4,8 +4,9 @@ import { motion } from "framer-motion";
 import { Briefcase, Users, FileText, GraduationCap, FileSpreadsheet, Compass, ArrowRight } from "lucide-react";
 import { SERVICES } from "@/constants";
 import { Button } from "./ui/button";
+import { useTranslations } from "next-intl";
 
-const ICON_MAP: Record<string, React.ComponentType<any>> = {
+const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
   Briefcase: Briefcase,
   Users: Users,
   FileText: FileText,
@@ -15,6 +16,12 @@ const ICON_MAP: Record<string, React.ComponentType<any>> = {
 };
 
 export function ServicesSection() {
+  const t = useTranslations("services");
+
+  const getServiceTitleKey = (id: string) => {
+    return `title_${id.replace(/-/g, "_")}`;
+  };
+
   const handleServiceClick = (serviceId: string) => {
     const isEmployerService = serviceId === "manpower-supply";
     const element = document.getElementById("lead-forms");
@@ -58,13 +65,13 @@ export function ServicesSection() {
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
           <div className="text-xs font-bold text-[#B6925B] tracking-widest uppercase">
-            Our Expertise
+            {t("tag")}
           </div>
           <h2 className="text-3xl md:text-4xl font-display font-extrabold text-[#0B192C]">
-            Professional Manpower & Recruitment Services
+            {t("title")}
           </h2>
           <p className="text-base md:text-lg text-slate-500 leading-relaxed font-sans">
-            Whether you are a job seeker aiming for foreign shores or an enterprise looking to source skilled human resources, we have customized solutions.
+            {t("desc")}
           </p>
         </div>
 
@@ -90,7 +97,7 @@ export function ServicesSection() {
 
                   {/* Title */}
                   <h3 className="font-display font-extrabold text-xl text-[#0B192C] mb-3 group-hover:text-[#B6925B] transition-colors">
-                    {service.title}
+                    {t(getServiceTitleKey(service.id))}
                   </h3>
 
                   {/* Description */}
@@ -105,9 +112,9 @@ export function ServicesSection() {
                     onClick={() => handleServiceClick(service.id)}
                     variant="link"
                     size="sm"
-                    className="gap-2 font-bold text-[#0B192C] group-hover:text-[#B6925B] transition-colors inline-flex items-center"
+                    className="gap-2 font-bold text-[#0B192C] group-hover:text-[#B6925B] transition-colors inline-flex items-center cursor-pointer"
                   >
-                    {isManpower ? "Request Manpower" : "Get Support"}
+                    {isManpower ? t("cta_manpower") : t("cta_support")}
                     <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                   </Button>
                 </div>

@@ -3,8 +3,11 @@
 import { motion } from "framer-motion";
 import { ArrowRight, Briefcase, Building2 } from "lucide-react";
 import { Button } from "./ui/button";
+import { useTranslations } from "next-intl";
 
 export function SplitCTA() {
+  const t = useTranslations("split");
+
   const scrollToForm = (formType: "seeker" | "employer") => {
     const element = document.getElementById("lead-forms");
     if (element) {
@@ -49,10 +52,10 @@ export function SplitCTA() {
                 <Briefcase className="h-6 w-6" />
               </div>
               <h3 className="font-display font-extrabold text-2xl md:text-3xl tracking-tight text-white">
-                For Job Seekers
+                {t("seeker_title")}
               </h3>
               <p className="text-sm md:text-base text-slate-300 leading-relaxed font-sans max-w-md">
-                Find verified overseas career opportunities across Europe, the Gulf, and North America. Get absolute guidance on profiling, embassy interviews, visa paperwork, and logistics from start to finish.
+                {t("seeker_desc")}
               </p>
             </div>
 
@@ -62,7 +65,7 @@ export function SplitCTA() {
                 variant="accent"
                 className="gap-2 cursor-pointer"
               >
-                Apply Now
+                {t("seeker_btn")}
                 <ArrowRight className="h-4 w-4" />
               </Button>
             </div>
@@ -81,10 +84,10 @@ export function SplitCTA() {
                 <Building2 className="h-6 w-6" />
               </div>
               <h3 className="font-display font-extrabold text-2xl md:text-3xl tracking-tight text-[#0B192C]">
-                For Employers
+                {t("employer_title")}
               </h3>
               <p className="text-sm md:text-base text-slate-600 leading-relaxed font-sans max-w-md">
-                Source vetted, medically certified, and technically proficient manpower for your business requirements. We support high-volume deployments and specialized technical recruiting across core industries.
+                {t("employer_desc")}
               </p>
             </div>
 
@@ -94,7 +97,7 @@ export function SplitCTA() {
                 variant="primary"
                 className="gap-2 cursor-pointer"
               >
-                Request Manpower
+                {t("employer_btn")}
                 <ArrowRight className="h-4 w-4" />
               </Button>
             </div>
@@ -105,3 +108,4 @@ export function SplitCTA() {
     </section>
   );
 }
+

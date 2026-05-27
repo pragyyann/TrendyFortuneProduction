@@ -1,11 +1,17 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowRight, Briefcase, Users, CheckCircle2, MessageCircle } from "lucide-react";
+import { Briefcase, Users, CheckCircle2, MessageCircle } from "lucide-react";
 import { Button } from "./ui/button";
-import { CONTACT_INFO } from "@/constants";
+import { useTranslations } from "next-intl";
+import { useLanguage } from "@/context/LanguageContext";
+import { getWhatsAppLink } from "./MobileStickyCTA";
 
 export function Hero() {
+  const t = useTranslations("hero");
+  const { locale } = useLanguage();
+  const whatsappUrl = getWhatsAppLink(locale);
+
   const scrollToForm = (formType: "seeker" | "employer") => {
     const element = document.getElementById("lead-forms");
     if (element) {
@@ -48,21 +54,17 @@ export function Hero() {
             {/* Tagline */}
             <div className="inline-flex items-center gap-2 bg-slate-100 border border-slate-200/50 px-4 py-1.5 rounded-full text-sm font-semibold text-[#0B192C]">
               <span className="flex h-2 w-2 rounded-full bg-[#10B981] animate-ping" />
-              Government Registered Recruitment Agency
+              {t("badge")}
             </div>
 
             {/* Headline */}
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-display font-extrabold text-[#0B192C] leading-[1.1] tracking-tight">
-              Overseas Recruitment & <br />
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#0B192C] via-[#1E3E62] to-[#B6925B]">
-                Manpower Solutions
-              </span> <br />
-              You Can Trust
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-display font-extrabold text-[#0B192C] leading-[1.2] tracking-tight">
+              {t("title")}
             </h1>
 
             {/* Subheadline */}
             <p className="text-lg md:text-xl text-slate-600 leading-relaxed max-w-xl font-sans">
-              Helping skilled professionals find global opportunities and helping employers hire reliable, certified manpower across industries worldwide.
+              {t("subtitle")}
             </p>
 
             {/* Bullet Highlights */}
@@ -94,7 +96,7 @@ export function Hero() {
                 className="gap-2 shadow-lg shadow-slate-900/10 cursor-pointer"
               >
                 <Briefcase className="h-5 w-5" />
-                Apply for Overseas Jobs
+                {t("applyBtn")}
               </Button>
               <Button
                 onClick={() => scrollToForm("employer")}
@@ -103,7 +105,7 @@ export function Hero() {
                 className="gap-2 bg-white hover:bg-slate-50 cursor-pointer"
               >
                 <Users className="h-5 w-5" />
-                Hire Manpower
+                {t("hireBtn")}
               </Button>
             </div>
           </motion.div>
@@ -180,14 +182,14 @@ export function Hero() {
 
       {/* Floating Interactive WhatsApp Button (Bottom Right) */}
       <a
-        href={CONTACT_INFO.whatsappUrl}
+        href={whatsappUrl}
         target="_blank"
         rel="noopener noreferrer"
         className="fixed bottom-6 right-6 z-50 flex items-center gap-2 bg-[#10B981] hover:bg-[#059669] text-white px-5 py-3 rounded-full shadow-2xl hover:scale-105 transition-all duration-300 font-semibold group focus:outline-none focus:ring-4 focus:ring-emerald-200"
         aria-label="Contact us on WhatsApp"
       >
         <MessageCircle className="h-6 w-6 shrink-0 fill-current animate-pulse" />
-        <span className="hidden sm:inline text-sm">WhatsApp Us</span>
+        <span className="hidden sm:inline text-sm">{t("whatsappBtn")}</span>
       </a>
 
       {/* Inline styles for SVG path animations */}

@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Navbar } from "@/components/Navbar";
 import { Hero } from "@/components/Hero";
 import { TrustStrip } from "@/components/TrustStrip";
+import { CountryFlagMarquee } from "@/components/CountryFlagMarquee";
 import { CountriesSection } from "@/components/CountriesSection";
 import { ServicesSection } from "@/components/ServicesSection";
 import { IndustrySection } from "@/components/IndustrySection";
@@ -15,6 +16,7 @@ import { SplitCTA } from "@/components/SplitCTA";
 import { LeadForm } from "@/components/LeadForm";
 import { ContactSection } from "@/components/ContactSection";
 import { Footer } from "@/components/Footer";
+import { MobileStickyCTA } from "@/components/MobileStickyCTA";
 
 // Import Loading Skeletons
 import {
@@ -92,6 +94,7 @@ export default function Home() {
               {/* Main Content Sections */}
               <Hero />
               <TrustStrip />
+              <CountryFlagMarquee />
               <CountriesSection />
               <ServicesSection />
               <IndustrySection />
@@ -99,6 +102,7 @@ export default function Home() {
               <SplitCTA />
               <LeadForm />
               <ContactSection />
+              <MobileStickyCTA />
             </motion.div>
           )}
         </AnimatePresence>

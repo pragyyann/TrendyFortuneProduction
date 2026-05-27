@@ -2,8 +2,14 @@
 
 import { motion } from "framer-motion";
 import { HOW_IT_WORKS_STEPS } from "@/constants";
+import { useTranslations } from "next-intl";
 
 export function HowItWorks() {
+  const t = useTranslations("howItWorks");
+
+  const getStepTitleKey = (num: number) => `step${num}_title`;
+  const getStepDescKey = (num: number) => `step${num}_desc`;
+
   return (
     <section className="py-20 bg-slate-50 relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -11,13 +17,13 @@ export function HowItWorks() {
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
           <div className="text-xs font-bold text-[#B6925B] tracking-widest uppercase">
-            Our Pipeline
+            {t("tag")}
           </div>
           <h2 className="text-3xl md:text-4xl font-display font-extrabold text-[#0B192C]">
-            How We Get You Deployed Abroad
+            {t("title")}
           </h2>
           <p className="text-base md:text-lg text-slate-500 leading-relaxed font-sans">
-            A transparent, highly organized, and legal recruitment pathway that ensures safe and hassle-free relocation for candidates.
+            {t("desc")}
           </p>
         </div>
 
@@ -43,12 +49,12 @@ export function HowItWorks() {
 
                 {/* Step Title */}
                 <h3 className="font-display font-extrabold text-lg text-[#0B192C] mb-3">
-                  {step.title}
+                  {t(getStepTitleKey(step.number))}
                 </h3>
 
                 {/* Description */}
                 <p className="text-sm text-slate-500 leading-relaxed font-sans max-w-[280px]">
-                  {step.description}
+                  {t(getStepDescKey(step.number))}
                 </p>
               </motion.div>
             ))}
@@ -58,3 +64,4 @@ export function HowItWorks() {
     </section>
   );
 }
+

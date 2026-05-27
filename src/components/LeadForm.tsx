@@ -11,14 +11,25 @@ import {
   JobSeekerFormValues,
   EmployerFormValues
 } from "@/schemas/formSchemas";
-import { COUNTRIES, INDUSTRIES } from "@/constants";
+import { INDUSTRIES } from "@/constants";
+import { CENTRAL_COUNTRIES, CountryData } from "@/data/countries";
 import { useToast } from "./ui/toast";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "./ui/tabs";
+import { Tabs, TabsList, TabsTrigger } from "./ui/tabs";
+import { useTranslations } from "next-intl";
+
+function getFlagEmoji(countryCode: string) {
+  const codePoints = countryCode
+    .toUpperCase()
+    .split("")
+    .map((char) => 127397 + char.charCodeAt(0));
+  return String.fromCodePoint(...codePoints);
+}
 
 export function LeadForm() {
+  const t = useTranslations("forms");
   const { toast } = useToast();
   const [activeTab, setActiveTab] = React.useState("seeker");
   const [isSubmittingSeeker, setIsSubmittingSeeker] = React.useState(false);
@@ -90,7 +101,7 @@ export function LeadForm() {
 
       seekerForm.reset();
       setSeekerCvName(null);
-    } catch (error) {
+    } catch {
       toast({
         title: "Submission Failed",
         description: "An unexpected error occurred. Please try again later.",
@@ -117,7 +128,7 @@ export function LeadForm() {
       });
 
       employerForm.reset();
-    } catch (error) {
+    } catch {
       toast({
         title: "Submission Failed",
         description: "An unexpected error occurred. Please try again later.",
@@ -145,13 +156,13 @@ export function LeadForm() {
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-12 space-y-4">
           <div className="text-xs font-bold text-[#B6925B] tracking-widest uppercase">
-            Start Your Journey
+            {t("tag")}
           </div>
           <h2 id="lead-forms" className="text-3xl md:text-4xl font-display font-extrabold text-[#0B192C]">
-            Submit Your Inquiry Today
+            {t("title")}
           </h2>
           <p className="text-sm md:text-base text-slate-500 leading-relaxed font-sans">
-            Ready to find your dream job abroad or recruit top-tier workforce? Select the appropriate form and send us your requirements.
+            {t("desc")}
           </p>
         </div>
 
@@ -159,11 +170,11 @@ export function LeadForm() {
         <Tabs defaultValue="seeker" value={activeTab} onValueChange={setActiveTab} className="w-full">
           <div className="flex justify-center mb-8">
             <TabsList className="grid grid-cols-2 bg-slate-200/50 p-1.5 rounded-2xl w-full max-w-md">
-              <TabsTrigger id="tab-seeker" value="seeker" className="rounded-xl">
-                Job Seeker Form
+              <TabsTrigger id="tab-seeker" value="seeker" className="rounded-xl cursor-pointer">
+                {t("tab_seeker")}
               </TabsTrigger>
-              <TabsTrigger id="tab-employer" value="employer" className="rounded-xl">
-                Employer Enquiry
+              <TabsTrigger id="tab-employer" value="employer" className="rounded-xl cursor-pointer">
+                {t("tab_employer")}
               </TabsTrigger>
             </TabsList>
           </div>
@@ -185,7 +196,7 @@ export function LeadForm() {
                     {/* Full Name */}
                     <div className="space-y-2">
                       <label htmlFor="fullName" className="text-sm font-semibold text-slate-700">
-                        Full Name <span className="text-red-500">*</span>
+                        {t("fullName")} <span className="text-red-500">*</span>
                       </label>
                       <Input
                         id="fullName"
@@ -201,7 +212,7 @@ export function LeadForm() {
                     {/* Phone Number */}
                     <div className="space-y-2">
                       <label htmlFor="phone" className="text-sm font-semibold text-slate-700">
-                        Phone Number <span className="text-red-500">*</span>
+                        {t("phone")} <span className="text-red-500">*</span>
                       </label>
                       <Input
                         id="phone"
@@ -220,7 +231,7 @@ export function LeadForm() {
                     {/* Email */}
                     <div className="space-y-2">
                       <label htmlFor="email" className="text-sm font-semibold text-slate-700">
-                        Email Address <span className="text-red-500">*</span>
+                        {t("email")} <span className="text-red-500">*</span>
                       </label>
                       <Input
                         id="email"
@@ -237,7 +248,7 @@ export function LeadForm() {
                     {/* Preferred Country */}
                     <div className="space-y-2">
                       <label htmlFor="preferredCountry" className="text-sm font-semibold text-slate-700">
-                        Preferred Country <span className="text-red-500">*</span>
+                        {t("pref_country")} <span className="text-red-500">*</span>
                       </label>
                       <div className="relative">
                         <select
@@ -248,9 +259,9 @@ export function LeadForm() {
                           {...seekerForm.register("preferredCountry")}
                         >
                           <option value="">Select country...</option>
-                          {COUNTRIES.map((c) => (
-                            <option key={c.id} value={c.name}>
-                              {c.flag} {c.name}
+                          {CENTRAL_COUNTRIES.map((c: CountryData) => (
+                            <option key={c.slug} value={c.name}>
+                              {getFlagEmoji(c.countryCode)} {c.name}
                             </option>
                           ))}
                         </select>
@@ -269,7 +280,7 @@ export function LeadForm() {
                     {/* Job Category */}
                     <div className="space-y-2">
                       <label htmlFor="jobCategory" className="text-sm font-semibold text-slate-700">
-                        Job Category <span className="text-red-500">*</span>
+                        {t("job_category")} <span className="text-red-500">*</span>
                       </label>
                       <Input
                         id="jobCategory"
@@ -285,7 +296,7 @@ export function LeadForm() {
                     {/* Experience */}
                     <div className="space-y-2">
                       <label htmlFor="experience" className="text-sm font-semibold text-slate-700">
-                        Years of Experience <span className="text-red-500">*</span>
+                        {t("exp")} <span className="text-red-500">*</span>
                       </label>
                       <div className="relative">
                         <select
@@ -315,7 +326,7 @@ export function LeadForm() {
                   {/* CV Upload */}
                   <div className="space-y-2">
                     <label className="text-sm font-semibold text-slate-700 block">
-                      Upload CV (PDF, DOCX) <span className="text-slate-400 font-normal">(Optional)</span>
+                      {t("cv_upload")}
                     </label>
                     <div className="border-2 border-dashed border-slate-200 hover:border-[#B6925B] transition-colors rounded-2xl p-6 flex flex-col items-center justify-center bg-slate-50 relative group">
                       <Input
@@ -342,7 +353,7 @@ export function LeadForm() {
                   {/* Message */}
                   <div className="space-y-2">
                     <label htmlFor="seekerMessage" className="text-sm font-semibold text-slate-700">
-                      Additional Message / Details
+                      {t("message")}
                     </label>
                     <Textarea
                       id="seekerMessage"
@@ -359,7 +370,7 @@ export function LeadForm() {
                     isLoading={isSubmittingSeeker}
                   >
                     <Send className="h-4 w-4" />
-                    Submit Application
+                    {t("submit_seeker")}
                   </Button>
                 </motion.form>
               ) : (
@@ -510,7 +521,7 @@ export function LeadForm() {
                   {/* Message */}
                   <div className="space-y-2">
                     <label htmlFor="employerMessage" className="text-sm font-semibold text-slate-700">
-                      Manpower Details & Requirements
+                      {t("message")}
                     </label>
                     <Textarea
                       id="employerMessage"
@@ -527,7 +538,7 @@ export function LeadForm() {
                     isLoading={isSubmittingEmployer}
                   >
                     <Send className="h-4 w-4" />
-                    Send Requirement
+                    {t("submit_employer")}
                   </Button>
                 </motion.form>
               )}

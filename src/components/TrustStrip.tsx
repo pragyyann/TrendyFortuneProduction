@@ -2,42 +2,45 @@
 
 import { motion } from "framer-motion";
 import { ShieldCheck, Users, FileCheck, Compass, HeartHandshake } from "lucide-react";
-
-const TRUST_ITEMS = [
-  {
-    icon: ShieldCheck,
-    title: "Overseas Job Assistance",
-    description: "Verified global career placements"
-  },
-  {
-    icon: Users,
-    title: "Skilled Manpower Supply",
-    description: "Vetted industrial & technical talent"
-  },
-  {
-    icon: FileCheck,
-    title: "Visa & Work Permit Support",
-    description: "Error-free documentation & filings"
-  },
-  {
-    icon: Compass,
-    title: "Career Guidance",
-    description: "Expert international market advice"
-  },
-  {
-    icon: HeartHandshake,
-    title: "Employer Hiring Support",
-    description: "Scalable global workforce recruitment"
-  }
-];
+import { useTranslations } from "next-intl";
 
 export function TrustStrip() {
+  const t = useTranslations("trust");
+
+  const trustItems = [
+    {
+      icon: ShieldCheck,
+      title: t("item1_title"),
+      description: t("item1_desc")
+    },
+    {
+      icon: Users,
+      title: t("item2_title"),
+      description: t("item2_desc")
+    },
+    {
+      icon: FileCheck,
+      title: t("item3_title"),
+      description: t("item3_desc")
+    },
+    {
+      icon: Compass,
+      title: t("item4_title"),
+      description: t("item4_desc")
+    },
+    {
+      icon: HeartHandshake,
+      title: t("item5_title"),
+      description: t("item5_desc")
+    }
+  ];
+
   return (
     <section className="bg-[#0B192C] py-8 text-white relative overflow-hidden border-y border-slate-800">
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(30,62,98,0.2),transparent)]" />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 text-center divide-y md:divide-y-0 lg:divide-x divide-slate-800">
-          {TRUST_ITEMS.map((item, idx) => {
+          {trustItems.map((item, idx) => {
             const Icon = item.icon;
             return (
               <motion.div
@@ -65,3 +68,4 @@ export function TrustStrip() {
     </section>
   );
 }
+

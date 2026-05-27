@@ -13,6 +13,8 @@ Trendy Fortune is a modern, premium, highly conversion-focused single-page marke
 * **Loose-Coupled Pre-selection Event**: Clicking "Apply Now" on country cards scrolls automatically and fills in the corresponding drop-down option in the Lead form.
 * **Government Recruitment Licence display**: Visual validation tags reinforcing consultancy credibility.
 * **Full SEO Metadata Integration**: Utilizes Next.js Metadata API and structured JSON-LD schema markup (`EmploymentAgency`) for superior local SEO indexing.
+* **Multilingual Support (i18n)**: Professional, localized translation for 5 target regional languages (English, Hindi, Bangla, Tamil, Malayalam) with seamless deferred rendering to avoid hydration mismatches.
+* **Floating CSS-Only Country Flag Marquee**: A lightweight, zero-dependency, infinite-loop flag slider displaying 14 target countries with full pause-on-hover interaction capabilities.
 
 ---
 
@@ -35,7 +37,10 @@ TrendyFortune/
 │   ├── ARCHITECTURE.md               # Technical decisions, theme variables
 │   ├── SEO.md                        # Next.js Metadata API, JSON-LD Schema details
 │   ├── FORMS.md                      # Form hooks, Zod validation, backend integration guide
-│   └── CONTENT-EDITING.md            # Simple content manual (editing phone, address, etc.)
+│   ├── CONTENT-EDITING.md            # Simple content manual (editing phone, address, etc.)
+│   ├── I18N.md                       # Multilingual setup, client-side translation framework
+│   ├── COUNTRIES.md                  # Centralized countries data, zero-dependency flag marquee
+│   └── TESTING.md                    # Quality Assurance, automated checks, visual manual testing
 ├── src/
 │   ├── app/
 │   │   ├── layout.tsx                # Fonts, Page framing, Metadata API, JSON-LD structure

@@ -6,11 +6,26 @@ import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { NAV_LINKS } from "@/constants";
 import { Button } from "./ui/button";
+import { useTranslations } from "next-intl";
+import { LanguageSwitcher } from "./LanguageSwitcher";
 
 export function Navbar() {
+  const t = useTranslations("navbar");
   const [isOpen, setIsOpen] = React.useState(false);
   const [scrolled, setScrolled] = React.useState(false);
   const [activeSection, setActiveSection] = React.useState("home");
+
+  const getNavLinkKey = (label: string) => {
+    switch (label.toLowerCase()) {
+      case "home": return "home";
+      case "jobs abroad": return "jobs";
+      case "services": return "services";
+      case "for employers": return "employers";
+      case "about": return "about";
+      case "contact": return "contact";
+      default: return "home";
+    }
+  };
 
   // Track scroll position for sticky header styling
   React.useEffect(() => {
@@ -108,6 +123,7 @@ export function Navbar() {
             <nav className="hidden lg:flex items-center gap-8">
               {NAV_LINKS.map((link) => {
                 const isActive = activeSection === link.href.substring(1);
+                const navKey = getNavLinkKey(link.label);
                 return (
                   <a
                     key={link.label}
@@ -118,7 +134,7 @@ export function Navbar() {
                       isActive ? "text-[#B6925B]" : "text-slate-600"
                     )}
                   >
-                    {link.label}
+                    {t(navKey)}
                     {isActive && (
                       <motion.div
                         layoutId="activeNavIndicator"
@@ -132,9 +148,10 @@ export function Navbar() {
             </nav>
 
             {/* Desktop CTA */}
-            <div className="hidden lg:flex items-center">
+            <div className="hidden lg:flex items-center gap-4">
+              <LanguageSwitcher />
               <Button onClick={handleApplyClick} variant="primary" className="gap-2 group">
-                Apply Now
+                {t("applyNow")}
                 <ArrowUpRight className="h-4 w-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
               </Button>
             </div>
@@ -162,10 +179,11 @@ export function Navbar() {
             transition={{ duration: 0.2 }}
             className="fixed inset-x-0 top-[72px] z-30 lg:hidden border-b border-slate-100 bg-white/95 backdrop-blur-lg shadow-xl"
           >
-            <div className="px-4 pt-4 pb-8 space-y-4">
+            <div className="px-4 pt-4 pb-8 space-y-6">
               <nav className="flex flex-col gap-4">
                 {NAV_LINKS.map((link) => {
                   const isActive = activeSection === link.href.substring(1);
+                  const navKey = getNavLinkKey(link.label);
                   return (
                     <a
                       key={link.label}
@@ -178,14 +196,15 @@ export function Navbar() {
                           : "text-slate-600 hover:bg-slate-50 hover:text-[#0B192C]"
                       )}
                     >
-                      {link.label}
+                      {t(navKey)}
                     </a>
                   );
                 })}
               </nav>
-              <div className="px-4 pt-4 border-t border-slate-100">
+              <div className="px-4 pt-4 border-t border-slate-100 flex flex-col gap-4">
+                <LanguageSwitcher isMobile={true} />
                 <Button onClick={handleApplyClick} variant="primary" className="w-full justify-center">
-                  Apply Now
+                  {t("applyNow")}
                 </Button>
               </div>
             </div>

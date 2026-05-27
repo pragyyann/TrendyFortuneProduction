@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { HardHat, Hotel, HeartPulse, Factory, Truck, ShieldAlert, Flame, ShoppingBag } from "lucide-react";
 import { INDUSTRIES } from "@/constants";
 
-const ICON_MAP: Record<string, React.ComponentType<any>> = {
+const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
   HardHat: HardHat,
   Hotel: Hotel,
   HeartPulse: HeartPulse,

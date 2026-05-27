@@ -1,9 +1,19 @@
 "use client";
 
 import { Globe2, Mail, Phone, MapPin, ArrowUpRight } from "lucide-react";
-import { CONTACT_INFO, COUNTRIES, SERVICES } from "@/constants";
+import { CONTACT_INFO, SERVICES } from "@/constants";
+import { useTranslations } from "next-intl";
 
 export function Footer() {
+  const tNavbar = useTranslations("navbar");
+  const tServices = useTranslations("services");
+  const tFooter = useTranslations("footer");
+  const tContact = useTranslations("contact");
+
+  const getServiceTitleKey = (id: string) => {
+    return `title_${id.replace(/-/g, "_")}`;
+  };
+
   const handleScrollTo = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
     e.preventDefault();
     const element = document.getElementById(targetId.substring(1));
@@ -71,36 +81,36 @@ export function Footer() {
 
           {/* Quick Links Column */}
           <div className="lg:col-span-2 space-y-5">
-            <h4 className="font-display font-extrabold text-sm text-white uppercase tracking-wider">Company</h4>
+            <h4 className="font-display font-extrabold text-sm text-white uppercase tracking-wider">{tFooter("quickLinks")}</h4>
             <ul className="space-y-3 text-sm">
               <li>
                 <a href="#home" onClick={(e) => handleScrollTo(e, "#home")} className="hover:text-[#B6925B] transition-colors focus:outline-none">
-                  Home
+                  {tNavbar("home")}
                 </a>
               </li>
               <li>
                 <a href="#jobs-abroad" onClick={(e) => handleScrollTo(e, "#jobs-abroad")} className="hover:text-[#B6925B] transition-colors focus:outline-none">
-                  Jobs Abroad
+                  {tNavbar("jobs")}
                 </a>
               </li>
               <li>
                 <a href="#services" onClick={(e) => handleScrollTo(e, "#services")} className="hover:text-[#B6925B] transition-colors focus:outline-none">
-                  Our Services
+                  {tNavbar("services")}
                 </a>
               </li>
               <li>
                 <a href="#about" onClick={(e) => handleScrollTo(e, "#about")} className="hover:text-[#B6925B] transition-colors focus:outline-none">
-                  About Us
+                  {tNavbar("about")}
                 </a>
               </li>
               <li>
                 <a href="#contact" onClick={(e) => handleScrollTo(e, "#contact")} className="hover:text-[#B6925B] transition-colors focus:outline-none">
-                  Contact
+                  {tNavbar("contact")}
                 </a>
               </li>
               <li>
                 <a href="#lead-forms" onClick={handleApplyNow} className="text-[#B6925B] hover:text-[#B6925B]/80 font-semibold transition-colors focus:outline-none inline-flex items-center gap-0.5">
-                  Apply Online <ArrowUpRight className="h-3 w-3" />
+                  {tNavbar("applyNow")} <ArrowUpRight className="h-3 w-3" />
                 </a>
               </li>
             </ul>
@@ -108,12 +118,12 @@ export function Footer() {
 
           {/* Services Column */}
           <div className="lg:col-span-3 space-y-5">
-            <h4 className="font-display font-extrabold text-sm text-white uppercase tracking-wider">Services</h4>
+            <h4 className="font-display font-extrabold text-sm text-white uppercase tracking-wider">{tNavbar("services")}</h4>
             <ul className="space-y-3 text-sm">
               {SERVICES.slice(0, 4).map((s) => (
                 <li key={s.id}>
                   <a href="#services" onClick={(e) => handleScrollTo(e, "#services")} className="hover:text-[#B6925B] transition-colors">
-                    {s.title}
+                    {tServices(getServiceTitleKey(s.id))}
                   </a>
                 </li>
               ))}
@@ -122,7 +132,7 @@ export function Footer() {
 
           {/* Contact details Col */}
           <div className="lg:col-span-3 space-y-5">
-            <h4 className="font-display font-extrabold text-sm text-white uppercase tracking-wider">Contact Info</h4>
+            <h4 className="font-display font-extrabold text-sm text-white uppercase tracking-wider">{tContact("tag")}</h4>
             <ul className="space-y-3.5 text-sm font-sans">
               <li className="flex items-start gap-3">
                 <Phone className="h-4 w-4 text-[#B6925B] shrink-0 mt-1" />
@@ -148,7 +158,7 @@ export function Footer() {
         {/* Bottom Credits / Footer */}
         <div className="flex flex-col sm:flex-row items-center justify-between pt-8 text-xs text-slate-500 font-sans gap-4">
           <div>
-            © {new Date().getFullYear()} Trendy Fortune recruitment services. All rights reserved.
+            © {new Date().getFullYear()} Trendy Fortune. {tFooter("rights")}
           </div>
           <div className="flex gap-6">
             <a href="#lead-forms" onClick={handleApplyNow} className="hover:text-slate-400">Terms of Service</a>

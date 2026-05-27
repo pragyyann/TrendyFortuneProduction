@@ -4,8 +4,15 @@ import { motion } from "framer-motion";
 import { Phone, Mail, MapPin, MessageSquare, Clock } from "lucide-react";
 import { CONTACT_INFO } from "@/constants";
 import { Button } from "./ui/button";
+import { useTranslations } from "next-intl";
+import { useLanguage } from "@/context/LanguageContext";
+import { getWhatsAppLink } from "./MobileStickyCTA";
 
 export function ContactSection() {
+  const t = useTranslations("contact");
+  const { locale } = useLanguage();
+  const whatsappUrl = getWhatsAppLink(locale);
+
   return (
     <section id="contact" className="py-20 bg-white relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -13,13 +20,13 @@ export function ContactSection() {
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
           <div className="text-xs font-bold text-[#B6925B] tracking-widest uppercase">
-            Get In Touch
+            {t("tag")}
           </div>
           <h2 className="text-3xl md:text-4xl font-display font-extrabold text-[#0B192C]">
-            We Are Ready to Help You Grow
+            {t("title")}
           </h2>
           <p className="text-base md:text-lg text-slate-500 leading-relaxed font-sans">
-            Have questions about visas, job openings, or bulk recruitment? Speak directly with our immigration experts today.
+            {t("desc")}
           </p>
         </div>
 
@@ -34,20 +41,19 @@ export function ContactSection() {
           >
             <div className="space-y-6">
               <h3 className="font-display font-extrabold text-2xl text-[#0B192C]">
-                Official Contact Office
+                {t("office_title")}
               </h3>
               <p className="text-sm text-slate-500 font-sans leading-relaxed">
-                Visit our office or call us directly during working hours. Our consultants are happy to assist you with free initial profiling assessments.
+                {t("office_desc")}
               </p>
 
               {/* Working Hours */}
               <div className="flex gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-100">
                 <Clock className="h-5 w-5 text-[#B6925B] shrink-0 mt-0.5" />
                 <div>
-                  <h4 className="font-display font-bold text-sm text-[#0B192C]">Office Timings</h4>
+                  <h4 className="font-display font-bold text-sm text-[#0B192C]">{t("timings")}</h4>
                   <p className="text-xs text-slate-500 mt-1 font-sans">
-                    Monday - Saturday: 10:00 AM - 6:30 PM <br />
-                    Sunday: Closed
+                    {t("timings_desc")}
                   </p>
                 </div>
               </div>
@@ -63,7 +69,7 @@ export function ContactSection() {
                     <Phone className="h-5 w-5" />
                   </div>
                   <div>
-                    <h4 className="font-display font-bold text-xs text-slate-400 uppercase tracking-wider">Call Our Office</h4>
+                    <h4 className="font-display font-bold text-xs text-slate-400 uppercase tracking-wider">{t("call")}</h4>
                     <p className="font-sans font-bold text-base md:text-lg text-[#0B192C] group-hover:text-[#B6925B] transition-colors mt-0.5">
                       {CONTACT_INFO.phone}
                     </p>
@@ -79,7 +85,7 @@ export function ContactSection() {
                     <Mail className="h-5 w-5" />
                   </div>
                   <div>
-                    <h4 className="font-display font-bold text-xs text-slate-400 uppercase tracking-wider">Email Support</h4>
+                    <h4 className="font-display font-bold text-xs text-slate-400 uppercase tracking-wider">{t("email")}</h4>
                     <p className="font-sans font-bold text-base md:text-lg text-[#0B192C] group-hover:text-[#B6925B] transition-colors mt-0.5">
                       {CONTACT_INFO.email}
                     </p>
@@ -92,7 +98,7 @@ export function ContactSection() {
                     <MapPin className="h-5 w-5" />
                   </div>
                   <div>
-                    <h4 className="font-display font-bold text-xs text-slate-400 uppercase tracking-wider">Main Address</h4>
+                    <h4 className="font-display font-bold text-xs text-slate-400 uppercase tracking-wider">{t("address")}</h4>
                     <p className="font-sans font-semibold text-sm text-slate-600 mt-0.5 leading-relaxed">
                       {CONTACT_INFO.address}
                     </p>
@@ -103,10 +109,10 @@ export function ContactSection() {
 
             {/* Direct WhatsApp Call to Action */}
             <div className="pt-4">
-              <a href={CONTACT_INFO.whatsappUrl} target="_blank" rel="noopener noreferrer">
+              <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
                 <Button variant="accent-emerald" className="w-full gap-2 h-12 shadow-lg shadow-emerald-500/10 cursor-pointer">
                   <MessageSquare className="h-5 w-5 shrink-0" />
-                  Chat on WhatsApp Now
+                  {t("chat_wa")}
                 </Button>
               </a>
             </div>
