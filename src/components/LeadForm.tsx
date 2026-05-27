@@ -169,11 +169,11 @@ export function LeadForm() {
         {/* Form Container */}
         <Tabs defaultValue="seeker" value={activeTab} onValueChange={setActiveTab} className="w-full">
           <div className="flex justify-center mb-8">
-            <TabsList className="grid grid-cols-2 bg-slate-200/50 p-1.5 rounded-2xl w-full max-w-md">
-              <TabsTrigger id="tab-seeker" value="seeker" className="rounded-xl cursor-pointer">
+            <TabsList className="grid grid-cols-2 bg-slate-100 border border-slate-200/50 p-1 rounded-full w-full max-w-sm sm:max-w-md h-12">
+              <TabsTrigger id="tab-seeker" value="seeker" className="rounded-full cursor-pointer text-sm font-semibold">
                 {t("tab_seeker")}
               </TabsTrigger>
-              <TabsTrigger id="tab-employer" value="employer" className="rounded-xl cursor-pointer">
+              <TabsTrigger id="tab-employer" value="employer" className="rounded-full cursor-pointer text-sm font-semibold">
                 {t("tab_employer")}
               </TabsTrigger>
             </TabsList>
