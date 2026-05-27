@@ -30,11 +30,11 @@ export function CountriesSection() {
 
       {/* Marquee Wrapper - Full Width with Left & Right Gradient Fades */}
       <div className="relative w-full flex items-center overflow-hidden">
-        {/* Left and Right Gradient Fades to blend into white bg */}
-        <div className="absolute left-0 top-0 bottom-0 w-12 sm:w-24 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-12 sm:w-24 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
+        {/* Left and Right Subtle Gradient Fades to blend into white bg */}
+        <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-32 bg-gradient-to-r from-white via-white/80 to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-16 sm:w-32 bg-gradient-to-l from-white via-white/80 to-transparent z-10 pointer-events-none" />
 
-        <div className="flex animate-marquee gap-6 py-4">
+        <div className="flex animate-marquee gap-8 py-4 px-4">
           {marqueeItems.map((country: CountryData, index: number) => {
             const FlagComponents = Flags as unknown as Record<string, React.ComponentType<{ className?: string; title?: string }>>;
             const FlagComponent = FlagComponents[country.countryCode];
@@ -42,31 +42,31 @@ export function CountriesSection() {
             return (
               <div
                 key={`${country.slug}-${index}`}
-                className="group flex-shrink-0 w-[220px] md:w-[240px] p-6 rounded-2xl bg-[#0B192C] border border-[#1E3E62]/45 hover:border-[#B6925B]/60 hover:shadow-[0_0_20px_rgba(182,146,91,0.25)] transition-all duration-300 relative overflow-hidden flex flex-col items-center justify-between cursor-default"
+                className="group flex-shrink-0 w-[240px] sm:w-[270px] p-6 rounded-2xl bg-white border border-slate-100 shadow-sm hover:border-[#B6925B]/40 hover:shadow-xl transition-all duration-300 relative overflow-hidden flex flex-col items-center justify-between cursor-default"
               >
                 {/* Gold Highlight top gradient bar */}
                 <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-[#B6925B] to-[#D4AF37]" />
 
-                {/* Flag Container - noticeably larger */}
-                <div className="w-20 h-12 rounded-lg overflow-hidden border border-slate-700/50 shadow-md flex-shrink-0 mb-4 mt-2 transition-transform duration-300 group-hover:scale-105">
+                {/* Flag Container - noticeably larger and clean */}
+                <div className="w-20 sm:w-24 h-12 sm:h-14 rounded-lg overflow-hidden border border-slate-200 shadow-sm flex-shrink-0 mb-4 mt-2 transition-transform duration-300 group-hover:scale-105">
                   {FlagComponent ? (
                     <FlagComponent className="w-full h-full object-cover" title={`${country.name} Flag`} />
                   ) : (
-                    <div className="w-full h-full bg-slate-800" />
+                    <div className="w-full h-full bg-slate-100" />
                   )}
                 </div>
 
-                {/* Country Name - bold and prominent */}
-                <h3 className="font-display font-extrabold text-white text-lg md:text-xl text-center tracking-tight mb-6 mt-1 transition-colors duration-300 group-hover:text-[#B6925B] truncate w-full px-2">
+                {/* Country Name - bold, prominent and centered */}
+                <h3 className="font-display font-extrabold text-[#0B192C] text-lg sm:text-xl text-center tracking-tight mb-6 mt-1 transition-colors duration-300 group-hover:text-[#B6925B] truncate w-full px-2">
                   {country.name}
                 </h3>
 
-                {/* Strong View Jobs Filled Button */}
+                {/* Strong View Jobs Filled Navy Button with Gold Hover */}
                 <a
                   href={country.jobsUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full h-11 min-h-[44px] flex items-center justify-center gap-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-sm transition-all duration-300 active:scale-[0.98] shadow-md hover:shadow-lg cursor-pointer"
+                  className="w-full h-11 min-h-[44px] flex items-center justify-center gap-2 rounded-xl bg-[#0B192C] text-white hover:bg-[#B6925B] font-bold text-sm transition-all duration-300 active:scale-[0.98] shadow-md hover:shadow-lg cursor-pointer"
                 >
                   <span>{t("viewJobs")}</span>
                   <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 flex-shrink-0" />
