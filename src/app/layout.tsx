@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
-import { Outfit, Inter, Noto_Sans_Devanagari, Noto_Sans_Bengali, Noto_Sans_Tamil, Noto_Sans_Malayalam } from "next/font/google";
+import { Sora, Inter, Noto_Sans_Devanagari, Noto_Sans_Bengali, Noto_Sans_Tamil, Noto_Sans_Malayalam } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
 import { LanguageProvider } from "@/context/LanguageContext";
 import { CONTACT_INFO } from "@/constants";
 
 // Google Fonts Setup
-const outfit = Outfit({
+const sora = Sora({
   subsets: ["latin"],
-  variable: "--font-outfit",
-  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-sora",
+  weight: ["300", "400", "500", "600", "700", "800"],
   display: "swap"
 });
 
@@ -154,7 +154,7 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="en" className={`${outfit.variable} ${inter.variable} ${deval.variable} ${bengal.variable} ${tamilFont.variable} ${malayalamFont.variable} h-full antialiased`}>
+    <html lang="en" className={`${sora.variable} ${inter.variable} ${deval.variable} ${bengal.variable} ${tamilFont.variable} ${malayalamFont.variable} h-full antialiased`}>
       <head>
         {/* Injecting JSON-LD script directly in the head element */}
         <script

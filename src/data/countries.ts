@@ -2,8 +2,8 @@ export interface CountryData {
   name: string;
   countryCode: string;
   slug: string;
-  description: string;
-  popularJobs: string[];
+  description?: string;
+  popularJobs?: string[];
   jobsUrl: string;
 }
 

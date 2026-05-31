@@ -3,52 +3,26 @@
 import * as React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FileUp, Send, Check } from "lucide-react";
+import { Send } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  jobSeekerSchema,
   employerSchema,
-  JobSeekerFormValues,
   EmployerFormValues
 } from "@/schemas/formSchemas";
 import { INDUSTRIES } from "@/constants";
-import { CENTRAL_COUNTRIES, CountryData } from "@/data/countries";
 import { useToast } from "./ui/toast";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { Tabs, TabsList, TabsTrigger } from "./ui/tabs";
 import { useTranslations } from "next-intl";
-
-function getFlagEmoji(countryCode: string) {
-  const codePoints = countryCode
-    .toUpperCase()
-    .split("")
-    .map((char) => 127397 + char.charCodeAt(0));
-  return String.fromCodePoint(...codePoints);
-}
+import { JobSeekerForm } from "./JobSeekerForm";
 
 export function LeadForm() {
   const t = useTranslations("forms");
   const { toast } = useToast();
   const [activeTab, setActiveTab] = React.useState("seeker");
-  const [isSubmittingSeeker, setIsSubmittingSeeker] = React.useState(false);
   const [isSubmittingEmployer, setIsSubmittingEmployer] = React.useState(false);
-  const [seekerCvName, setSeekerCvName] = React.useState<string | null>(null);
-
-  // Job Seeker Form hook
-  const seekerForm = useForm<JobSeekerFormValues>({
-    resolver: zodResolver(jobSeekerSchema),
-    defaultValues: {
-      fullName: "",
-      phone: "",
-      email: "",
-      preferredCountry: "",
-      jobCategory: "",
-      experience: "",
-      message: ""
-    }
-  });
 
   // Employer Form hook
   const employerForm = useForm<EmployerFormValues>({
@@ -61,73 +35,92 @@ export function LeadForm() {
       industry: "",
       workersRequired: 1,
       location: "",
-      message: ""
+      requiredJobRoles: "",
+      message: "",
+      consent: false,
+      website: "", // honeypot — must stay empty
     }
   });
 
-  // Listen for country pre-selection events
+  // Listen for country pre-selection events and query parameters
   React.useEffect(() => {
-    const handlePreselect = (event: Event) => {
-      const customEvent = event as CustomEvent<{ country: string }>;
-      if (customEvent.detail && customEvent.detail.country) {
-        // Set tab to seeker
-        setActiveTab("seeker");
-        // Set preferred country
-        seekerForm.setValue("preferredCountry", customEvent.detail.country);
-      }
+    const handlePreselect = () => {
+      setActiveTab("seeker");
     };
 
     window.addEventListener("preselect-country", handlePreselect);
-    return () => window.removeEventListener("preselect-country", handlePreselect);
-  }, [seekerForm]);
 
-  // Seeker submit handler
-  const onSeekerSubmit = async (data: JobSeekerFormValues) => {
-    setIsSubmittingSeeker(true);
-    try {
-      // Simulate API latency
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      
-      console.log("Job Seeker Lead Data Submitted Successfully:", {
-        ...data,
-        cvFileUploaded: seekerCvName || "No file uploaded"
-      });
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const countryParam = params.get("country");
+      const jobIdParam = params.get("job_id");
 
-      toast({
-        title: "Application Received!",
-        description: `Thank you ${data.fullName}. Our career counselor will call you within 24 hours.`,
-        type: "success"
-      });
-
-      seekerForm.reset();
-      setSeekerCvName(null);
-    } catch {
-      toast({
-        title: "Submission Failed",
-        description: "An unexpected error occurred. Please try again later.",
-        type: "error"
-      });
-    } finally {
-      setIsSubmittingSeeker(false);
+      if (countryParam || jobIdParam) {
+        setActiveTab("seeker");
+      }
     }
-  };
+
+    return () => window.removeEventListener("preselect-country", handlePreselect);
+  }, []);
+
+  // Listen to hash changes for deep linking to specific tabs
+  React.useEffect(() => {
+    const handleHashChange = () => {
+      if (typeof window !== "undefined") {
+        const hash = window.location.hash;
+        if (hash === "#job-seeker") {
+          setActiveTab("seeker");
+        } else if (hash === "#employer" || hash === "#for-employers") {
+          setActiveTab("employer");
+        }
+      }
+    };
+
+    handleHashChange();
+    window.addEventListener("hashchange", handleHashChange);
+    return () => window.removeEventListener("hashchange", handleHashChange);
+  }, []);
 
   // Employer submit handler
   const onEmployerSubmit = async (data: EmployerFormValues) => {
     setIsSubmittingEmployer(true);
     try {
-      // Simulate API latency
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      const payload = {
+        company_name: data.companyName,
+        contact_person: data.contactPerson,
+        mobile_number: data.phone,
+        email: data.email,
+        country_location: data.location,
+        industry: data.industry,
+        workers_required: data.workersRequired,
+        required_job_roles: data.requiredJobRoles,
+        message: data.message,
+        consent: data.consent,
+        website: data.website || "", // honeypot field
+      };
 
-      console.log("Employer Enquiry Data Submitted Successfully:", data);
-
-      toast({
-        title: "Requirement Submitted!",
-        description: `Thank you ${data.contactPerson}. Our account manager will contact you with profiles shortly.`,
-        type: "success"
+      const res = await fetch("/api/employer-inquiries", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
       });
 
-      employerForm.reset();
+      const result = await res.json();
+
+      if (res.ok && result.success !== false) {
+        toast({
+          title: "Inquiry Submitted!",
+          description: "Employer inquiry submitted successfully. Our team will contact you soon.",
+          type: "success"
+        });
+        employerForm.reset();
+      } else {
+        toast({
+          title: "Submission Failed",
+          description: result.message || "Something went wrong. Please try again later.",
+          type: "error"
+        });
+      }
     } catch {
       toast({
         title: "Submission Failed",
@@ -139,16 +132,11 @@ export function LeadForm() {
     }
   };
 
-  const handleCvChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
-      const file = e.target.files[0];
-      setSeekerCvName(file.name);
-      seekerForm.setValue("cvFile", file);
-    }
-  };
-
   return (
     <section id="for-employers" className="py-20 bg-slate-50 relative overflow-hidden">
+      {/* Anchor targets for hash navigation and scrolling */}
+      <div id="job-seeker" className="absolute top-0 left-0 h-0 w-0 pointer-events-none" />
+      <div id="employer" className="absolute top-0 left-0 h-0 w-0 pointer-events-none" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,rgba(182,146,91,0.03),transparent)]" />
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -170,10 +158,20 @@ export function LeadForm() {
         <Tabs defaultValue="seeker" value={activeTab} onValueChange={setActiveTab} className="w-full">
           <div className="flex justify-center mb-8">
             <TabsList className="grid grid-cols-2 bg-slate-100 border border-slate-200/50 p-1 rounded-full w-full max-w-sm sm:max-w-md h-12">
-              <TabsTrigger id="tab-seeker" value="seeker" className="rounded-full cursor-pointer text-sm font-semibold">
+              <TabsTrigger
+                id="tab-seeker"
+                value="seeker"
+                className="rounded-full cursor-pointer text-sm font-semibold"
+                onClick={() => setActiveTab("seeker")}
+              >
                 {t("tab_seeker")}
               </TabsTrigger>
-              <TabsTrigger id="tab-employer" value="employer" className="rounded-full cursor-pointer text-sm font-semibold">
+              <TabsTrigger
+                id="tab-employer"
+                value="employer"
+                className="rounded-full cursor-pointer text-sm font-semibold"
+                onClick={() => setActiveTab("employer")}
+              >
                 {t("tab_employer")}
               </TabsTrigger>
             </TabsList>
@@ -183,196 +181,15 @@ export function LeadForm() {
             <AnimatePresence mode="wait">
               {/* Job Seeker Form Tab */}
               {activeTab === "seeker" ? (
-                <motion.form
+                <motion.div
                   key="seeker-form"
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.3 }}
-                  onSubmit={seekerForm.handleSubmit(onSeekerSubmit)}
-                  className="space-y-6"
                 >
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {/* Full Name */}
-                    <div className="space-y-2">
-                      <label htmlFor="fullName" className="text-sm font-semibold text-slate-700">
-                        {t("fullName")} <span className="text-red-500">*</span>
-                      </label>
-                      <Input
-                        id="fullName"
-                        placeholder="John Doe"
-                        error={!!seekerForm.formState.errors.fullName}
-                        {...seekerForm.register("fullName")}
-                      />
-                      {seekerForm.formState.errors.fullName && (
-                        <p className="text-xs text-red-500">{seekerForm.formState.errors.fullName.message}</p>
-                      )}
-                    </div>
-
-                    {/* Phone Number */}
-                    <div className="space-y-2">
-                      <label htmlFor="phone" className="text-sm font-semibold text-slate-700">
-                        {t("phone")} <span className="text-red-500">*</span>
-                      </label>
-                      <Input
-                        id="phone"
-                        type="tel"
-                        placeholder="e.g. +91 9876543210"
-                        error={!!seekerForm.formState.errors.phone}
-                        {...seekerForm.register("phone")}
-                      />
-                      {seekerForm.formState.errors.phone && (
-                        <p className="text-xs text-red-500">{seekerForm.formState.errors.phone.message}</p>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {/* Email */}
-                    <div className="space-y-2">
-                      <label htmlFor="email" className="text-sm font-semibold text-slate-700">
-                        {t("email")} <span className="text-red-500">*</span>
-                      </label>
-                      <Input
-                        id="email"
-                        type="email"
-                        placeholder="johndoe@email.com"
-                        error={!!seekerForm.formState.errors.email}
-                        {...seekerForm.register("email")}
-                      />
-                      {seekerForm.formState.errors.email && (
-                        <p className="text-xs text-red-500">{seekerForm.formState.errors.email.message}</p>
-                      )}
-                    </div>
-
-                    {/* Preferred Country */}
-                    <div className="space-y-2">
-                      <label htmlFor="preferredCountry" className="text-sm font-semibold text-slate-700">
-                        {t("pref_country")} <span className="text-red-500">*</span>
-                      </label>
-                      <div className="relative">
-                        <select
-                          id="preferredCountry"
-                          className={`flex h-11 w-full rounded-xl border border-slate-200 bg-white px-4 py-2 text-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0B192C] focus-visible:ring-offset-2 appearance-none cursor-pointer ${
-                            seekerForm.formState.errors.preferredCountry ? "border-red-500" : ""
-                          }`}
-                          {...seekerForm.register("preferredCountry")}
-                        >
-                          <option value="">Select country...</option>
-                          {CENTRAL_COUNTRIES.map((c: CountryData) => (
-                            <option key={c.slug} value={c.name}>
-                              {getFlagEmoji(c.countryCode)} {c.name}
-                            </option>
-                          ))}
-                        </select>
-                        {/* Custom Select arrow */}
-                        <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
-                          ▼
-                        </div>
-                      </div>
-                      {seekerForm.formState.errors.preferredCountry && (
-                        <p className="text-xs text-red-500">{seekerForm.formState.errors.preferredCountry.message}</p>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {/* Job Category */}
-                    <div className="space-y-2">
-                      <label htmlFor="jobCategory" className="text-sm font-semibold text-slate-700">
-                        {t("job_category")} <span className="text-red-500">*</span>
-                      </label>
-                      <Input
-                        id="jobCategory"
-                        placeholder="e.g. Electrician, Nurse, Welder"
-                        error={!!seekerForm.formState.errors.jobCategory}
-                        {...seekerForm.register("jobCategory")}
-                      />
-                      {seekerForm.formState.errors.jobCategory && (
-                        <p className="text-xs text-red-500">{seekerForm.formState.errors.jobCategory.message}</p>
-                      )}
-                    </div>
-
-                    {/* Experience */}
-                    <div className="space-y-2">
-                      <label htmlFor="experience" className="text-sm font-semibold text-slate-700">
-                        {t("exp")} <span className="text-red-500">*</span>
-                      </label>
-                      <div className="relative">
-                        <select
-                          id="experience"
-                          className={`flex h-11 w-full rounded-xl border border-slate-200 bg-white px-4 py-2 text-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0B192C] focus-visible:ring-offset-2 appearance-none cursor-pointer ${
-                            seekerForm.formState.errors.experience ? "border-red-500" : ""
-                          }`}
-                          {...seekerForm.register("experience")}
-                        >
-                          <option value="">Select experience...</option>
-                          <option value="fresher">Fresher / No Experience</option>
-                          <option value="1-2 years">1 - 2 Years</option>
-                          <option value="3-5 years">3 - 5 Years</option>
-                          <option value="5-10 years">5 - 10 Years</option>
-                          <option value="10+ years">10+ Years</option>
-                        </select>
-                        <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
-                          ▼
-                        </div>
-                      </div>
-                      {seekerForm.formState.errors.experience && (
-                        <p className="text-xs text-red-500">{seekerForm.formState.errors.experience.message}</p>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* CV Upload */}
-                  <div className="space-y-2">
-                    <label className="text-sm font-semibold text-slate-700 block">
-                      {t("cv_upload")}
-                    </label>
-                    <div className="border-2 border-dashed border-slate-200 hover:border-[#B6925B] transition-colors rounded-2xl p-6 flex flex-col items-center justify-center bg-slate-50 relative group">
-                      <Input
-                        type="file"
-                        accept=".pdf,.doc,.docx"
-                        onChange={handleCvChange}
-                        className="absolute inset-0 opacity-0 cursor-pointer w-full h-full z-10"
-                      />
-                      {seekerCvName ? (
-                        <div className="flex items-center gap-2 text-emerald-600 font-semibold text-sm">
-                          <Check className="h-5 w-5 bg-emerald-100 p-0.5 rounded-full shrink-0" />
-                          <span>{seekerCvName}</span>
-                        </div>
-                      ) : (
-                        <>
-                          <FileUp className="h-8 w-8 text-slate-400 mb-2 group-hover:scale-105 group-hover:text-[#B6925B] transition-all" />
-                          <span className="text-sm text-slate-600 font-semibold">Click to select file</span>
-                          <span className="text-xs text-slate-400 mt-1">Maximum file size: 5MB</span>
-                        </>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Message */}
-                  <div className="space-y-2">
-                    <label htmlFor="seekerMessage" className="text-sm font-semibold text-slate-700">
-                      {t("message")}
-                    </label>
-                    <Textarea
-                      id="seekerMessage"
-                      placeholder="Share any specific requests, preferred visa timelines, or licensing details..."
-                      {...seekerForm.register("message")}
-                    />
-                  </div>
-
-                  {/* Submit Button */}
-                  <Button
-                    type="submit"
-                    variant="accent"
-                    className="w-full justify-center gap-2 h-12 shadow-lg shadow-[#B6925B]/10 cursor-pointer"
-                    isLoading={isSubmittingSeeker}
-                  >
-                    <Send className="h-4 w-4" />
-                    {t("submit_seeker")}
-                  </Button>
-                </motion.form>
+                  <JobSeekerForm />
+                </motion.div>
               ) : (
                 <motion.form
                   key="employer-form"
@@ -391,7 +208,7 @@ export function LeadForm() {
                       </label>
                       <Input
                         id="companyName"
-                        placeholder="e.g. Al-Futtaim Construction"
+                        placeholder={t("placeholder_companyName")}
                         error={!!employerForm.formState.errors.companyName}
                         {...employerForm.register("companyName")}
                       />
@@ -407,7 +224,7 @@ export function LeadForm() {
                       </label>
                       <Input
                         id="contactPerson"
-                        placeholder="e.g. HR Manager / Owner"
+                        placeholder={t("placeholder_contactPerson")}
                         error={!!employerForm.formState.errors.contactPerson}
                         {...employerForm.register("contactPerson")}
                       />
@@ -426,7 +243,7 @@ export function LeadForm() {
                       <Input
                         id="employerPhone"
                         type="tel"
-                        placeholder="e.g. +971 50 123 4567"
+                        placeholder={t("placeholder_phone")}
                         error={!!employerForm.formState.errors.phone}
                         {...employerForm.register("phone")}
                       />
@@ -443,7 +260,7 @@ export function LeadForm() {
                       <Input
                         id="employerEmail"
                         type="email"
-                        placeholder="recruitment@company.com"
+                        placeholder={t("placeholder_employerEmail")}
                         error={!!employerForm.formState.errors.email}
                         {...employerForm.register("email")}
                       />
@@ -492,7 +309,7 @@ export function LeadForm() {
                         id="workersRequired"
                         type="number"
                         min="1"
-                        placeholder="e.g. 50"
+                        placeholder={t("placeholder_workersRequired")}
                         error={!!employerForm.formState.errors.workersRequired}
                         {...employerForm.register("workersRequired", { valueAsNumber: true })}
                       />
@@ -508,7 +325,7 @@ export function LeadForm() {
                       </label>
                       <Input
                         id="location"
-                        placeholder="e.g. Riyadh, Saudi Arabia"
+                        placeholder={t("placeholder_location")}
                         error={!!employerForm.formState.errors.location}
                         {...employerForm.register("location")}
                       />
@@ -518,15 +335,62 @@ export function LeadForm() {
                     </div>
                   </div>
 
+                  {/* Required Job Roles */}
+                  <div className="space-y-2">
+                    <label htmlFor="requiredJobRoles" className="text-sm font-semibold text-slate-700">
+                      Required Job Roles <span className="text-red-500">*</span>
+                    </label>
+                    <Input
+                      id="requiredJobRoles"
+                      placeholder="e.g. Welder, Electrician, Carpenter"
+                      error={!!employerForm.formState.errors.requiredJobRoles}
+                      {...employerForm.register("requiredJobRoles")}
+                    />
+                    {employerForm.formState.errors.requiredJobRoles && (
+                      <p className="text-xs text-red-500">{employerForm.formState.errors.requiredJobRoles.message}</p>
+                    )}
+                  </div>
+
                   {/* Message */}
                   <div className="space-y-2">
                     <label htmlFor="employerMessage" className="text-sm font-semibold text-slate-700">
-                      {t("message")}
+                      Inquiry Details <span className="text-red-500">*</span>
                     </label>
                     <Textarea
                       id="employerMessage"
-                      placeholder="Detail the technical credentials required, standard visa contracts, lodging provisions, or flight ticket terms..."
+                      placeholder={t("placeholder_employerMessage")}
                       {...employerForm.register("message")}
+                    />
+                    {employerForm.formState.errors.message && (
+                      <p className="text-xs text-red-500">{employerForm.formState.errors.message.message}</p>
+                    )}
+                  </div>
+
+                  {/* Consent Checkbox */}
+                  <label htmlFor="employerConsent" className="flex items-start gap-3 cursor-pointer group">
+                    <input
+                      id="employerConsent"
+                      type="checkbox"
+                      className="mt-0.5 h-5 w-5 rounded border-slate-300 text-[#0B192C] focus:ring-[#0B192C] cursor-pointer"
+                      {...employerForm.register("consent")}
+                    />
+                    <span className="text-sm text-slate-600 leading-snug">
+                      I agree to be contacted by Trendy Fortune regarding this inquiry. <span className="text-red-500">*</span>
+                    </span>
+                  </label>
+                  {employerForm.formState.errors.consent && (
+                    <p className="text-xs text-red-500 -mt-4">{employerForm.formState.errors.consent.message}</p>
+                  )}
+
+                  {/* Honeypot field — hidden from real users, catches bots */}
+                  <div aria-hidden="true" className="absolute opacity-0 pointer-events-none" style={{ left: "-9999px", top: "-9999px" }}>
+                    <label htmlFor="employer-website">Website</label>
+                    <input
+                      id="employer-website"
+                      type="text"
+                      tabIndex={-1}
+                      autoComplete="off"
+                      {...employerForm.register("website")}
                     />
                   </div>
 

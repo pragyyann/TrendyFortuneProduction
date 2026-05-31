@@ -2,15 +2,15 @@
 
 @theme {
   --font-sans: var(--font-inter), var(--font-devanagari), var(--font-bengali), var(--font-tamil), var(--font-malayalam), sans-serif;
-  --font-display: var(--font-outfit), var(--font-devanagari), var(--font-bengali), var(--font-tamil), var(--font-malayalam), sans-serif;
+  --font-display: var(--font-sora), var(--font-font-sora), var(--font-devanagari), var(--font-bengali), var(--font-tamil), var(--font-malayalam), sans-serif;
   
   /* Premium Brand Palette */
-  --color-navy-900: #0B192C;
-  --color-navy-800: #122237;
-  --color-navy-700: #1E3E62;
-  --color-navy-600: #2C5282;
+  --color-navy-900: #071426;
+  --color-navy-800: #0E1B2C;
+  --color-navy-700: #152A42;
+  --color-navy-600: #1E3E62;
   
-  --color-gold-600: #B6925B;
+  --color-gold-600: #B8945E;
   --color-gold-700: #A37F48;
   --color-gold-500: #D4AF37;
   
@@ -32,12 +32,32 @@ body {
   font-family: var(--font-sans);
   background-color: #ffffff;
   color: var(--color-neutral-900);
+  line-height: 1.625;
 }
 
-h1, h2, h3, h4, h5, h6 {
+p {
+  line-height: 1.7;
+}
+
+/* Large display headings get tight tracking for premium feel */
+h1, h2, h3 {
   font-family: var(--font-display);
   font-weight: 700;
-  letter-spacing: -0.025em;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+/* Smaller headings: no negative tracking — keeps them legible */
+h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: 0em;
+  line-height: 1.4;
+}
+
+/* Button text: always semibold, no letter spacing */
+button, [role="button"] {
+  letter-spacing: 0;
 }
 
 /* Glassmorphism Navigation utility */
@@ -96,4 +116,19 @@ h1, h2, h3, h4, h5, h6 {
 .animate-marquee:hover {
   animation-play-state: paused;
 }
+
+/* Gold Glow Pulse Animation */
+@keyframes gold-glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(182, 146, 91, 0.6);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(182, 146, 91, 0);
+  }
+}
+
+.animate-gold-glow {
+  animation: gold-glow-pulse 2s infinite;
+}
+
 

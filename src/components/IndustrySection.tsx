@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { HardHat, Hotel, HeartPulse, Factory, Truck, ShieldAlert, Flame, ShoppingBag } from "lucide-react";
 import { INDUSTRIES } from "@/constants";
+import { useTranslations } from "next-intl";
 
 const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
   HardHat: HardHat,
@@ -16,6 +17,8 @@ const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
 };
 
 export function IndustrySection() {
+  const t = useTranslations("industries");
+
   return (
     <section className="py-20 bg-white relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -23,13 +26,13 @@ export function IndustrySection() {
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
           <div className="text-xs font-bold text-[#B6925B] tracking-widest uppercase">
-            Industries We Serve
+            {t("badge")}
           </div>
           <h2 className="text-3xl md:text-4xl font-display font-extrabold text-[#0B192C]">
-            Empowering Key Global Sectors
+            {t("title")}
           </h2>
           <p className="text-base md:text-lg text-slate-500 leading-relaxed font-sans">
-            We provide skilled, semi-skilled, and general workers trained specifically to meet compliance regulations of various core international sectors.
+            {t("description")}
           </p>
         </div>
 
@@ -37,6 +40,7 @@ export function IndustrySection() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {INDUSTRIES.map((industry, idx) => {
             const Icon = ICON_MAP[industry.iconName] || HardHat;
+            const translationKey = industry.id === "oil-gas" ? "oilGas" : industry.id;
             return (
               <motion.div
                 key={industry.id}
@@ -53,7 +57,7 @@ export function IndustrySection() {
                 
                 {/* Industry Name */}
                 <h3 className="font-display font-bold text-base md:text-lg text-[#0B192C] group-hover:text-white transition-colors">
-                  {industry.name}
+                  {t(`items.${translationKey}`)}
                 </h3>
               </motion.div>
             );

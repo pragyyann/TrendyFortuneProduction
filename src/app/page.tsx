@@ -12,6 +12,8 @@ import { ServicesSection } from "@/components/ServicesSection";
 import { IndustrySection } from "@/components/IndustrySection";
 import { HowItWorks } from "@/components/HowItWorks";
 import { SplitCTA } from "@/components/SplitCTA";
+import { TestimonialsSection } from "@/components/TestimonialsSection";
+import { FAQSection } from "@/components/FAQSection";
 import { LeadForm } from "@/components/LeadForm";
 import { ContactSection } from "@/components/ContactSection";
 import { Footer } from "@/components/Footer";
@@ -98,6 +100,8 @@ export default function Home() {
               <IndustrySection />
               <HowItWorks />
               <SplitCTA />
+              <TestimonialsSection />
+              <FAQSection />
               <LeadForm />
               <ContactSection />
               <MobileStickyCTA />

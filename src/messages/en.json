@@ -6,7 +6,9 @@
     "employers": "For Employers",
     "about": "About",
     "contact": "Contact",
-    "applyNow": "Apply Now"
+    "completePayment": "Complete Payment",
+    "applyNow": "Apply Now",
+    "bookAppointment": "Book Appointment"
   },
   "hero": {
     "badge": "Government Registered & ISO Certified Agency",
@@ -32,7 +34,8 @@
     "tag": "Global Destinations",
     "title": "International Locations We Recruit For",
     "desc": "We partner with legally registered employers across major global destinations. Explore visa pathways and open vacancies waiting for you.",
-    "viewJobs": "View Jobs"
+    "viewJobs": "View Jobs",
+    "mapInstruction": "Tap any country dot to view available jobs"
   },
   "services": {
     "tag": "Our Services",
@@ -69,6 +72,16 @@
     "step4_desc": "We handle work visa filings, medical tests, emigration clearance, and organize pre-departure briefings."
   },
   "forms": {
+    "application": {
+      "jobSeeker": {
+        "email": {
+          "label": "Email Address *",
+          "placeholder": "example@email.com",
+          "required": "Email address is required.",
+          "invalid": "Please enter a valid email address."
+        }
+      }
+    },
     "tag": "Get Started",
     "title": "Send Your Details Today",
     "desc": "Ready for your next career move or looking to hire? Select the correct form and submit your request.",
@@ -83,7 +96,18 @@
     "cv_upload": "Upload Your CV / Resume (Optional)",
     "message": "Additional Message",
     "submit_seeker": "Apply for Overseas Job",
-    "submit_employer": "Submit Inquiry"
+    "submit_employer": "Submit Inquiry",
+    "placeholder_fullName": "Enter your full name",
+    "placeholder_phone": "98765 43210",
+    "placeholder_email": "example@email.com",
+    "placeholder_jobCategory": "Enter your job category or trade",
+    "placeholder_seekerMessage": "Tell us about your work experience",
+    "placeholder_companyName": "Enter company name",
+    "placeholder_contactPerson": "Enter contact person name",
+    "placeholder_employerEmail": "company@example.com",
+    "placeholder_workersRequired": "Enter number of workers required",
+    "placeholder_location": "Enter country or location",
+    "placeholder_employerMessage": "Tell us your manpower requirement"
   },
   "contact": {
     "tag": "Contact Us",
@@ -92,7 +116,7 @@
     "office_title": "Official Contact Office",
     "office_desc": "Visit our office or call us during business hours. Our career advisors are ready to evaluate your profile for free.",
     "timings": "Office Timings",
-    "timings_desc": "Monday - Saturday: 10:00 AM to 6:30 PM",
+    "timings_desc": "Monday - Saturday: 9:00 AM to 6:00 PM",
     "call": "Call Now",
     "email": "Email Us",
     "address": "Office Address",
@@ -105,5 +129,117 @@
   "sticky": {
     "call": "Call Now",
     "whatsapp": "WhatsApp"
+  },
+  "testimonials": {
+    "sectionLabel": "Testimonials",
+    "heading": "Trusted by Candidates & Employers",
+    "subtitle": "Real stories and feedback from people who connected with Trendy Fortune.",
+    "video_label": "Video Testimonials",
+    "video_title": "Watch Our Candidate Stories",
+    "video_description": "See how Trendy Fortune guides candidates through overseas job opportunities.",
+    "video_cta": "Watch Video",
+    "item1_name": "Candidate from Bihar",
+    "item1_role": "Welder",
+    "item1_text": "Trendy Fortune helped me understand the overseas job process clearly and guided me with documentation step by step.",
+    "item2_name": "Candidate from Uttar Pradesh",
+    "item2_role": "Electrician",
+    "item2_text": "The team explained the work permit and job process in simple language. It made the process easier for my family to understand.",
+    "item3_name": "Candidate from West Bengal",
+    "item3_role": "Hospitality Worker",
+    "item3_text": "I received clear guidance about required documents, interview preparation, and overseas job options.",
+    "item4_name": "Employer Partner",
+    "item4_role": "Manpower Hiring",
+    "item4_text": "Trendy Fortune helped us connect with suitable skilled workers for our overseas hiring needs.",
+    "item5_name": "Candidate from Tamil Nadu",
+    "item5_role": "Technician",
+    "item5_text": "The support was professional and transparent. I knew what documents were needed and what steps came next.",
+    "item6_name": "Candidate from Kerala",
+    "item6_role": "Driver",
+    "item6_text": "The team was responsive and guided me through the process without confusion."
+  },
+  "faq": {
+    "sectionLabel": "FAQ",
+    "heading": "Frequently Asked Questions",
+    "subtitle": "Clear answers about overseas jobs, documents, employers, and support.",
+    "item1_question": "How do I apply for an overseas job?",
+    "item1_answer": "You can fill out the job seeker form on the website or contact us on WhatsApp. Our team will review your details and guide you through the next steps.",
+    "item2_question": "Which countries do you provide job opportunities for?",
+    "item2_answer": "We work with opportunities across countries such as UAE, Saudi Arabia, Oman, Russia, Malaysia, Vietnam, and other international destinations based on current demand.",
+    "item3_question": "Do I need a passport to apply?",
+    "item3_answer": "A passport is usually required for overseas job processing. If you do not have one yet, our team can guide you on the basic document requirements.",
+    "item4_question": "What documents are usually required?",
+    "item4_answer": "Common documents include passport, resume, work experience details, educational or trade certificates, photographs, and identity documents. Exact requirements depend on the job and country.",
+    "item5_question": "Can employers request manpower through the website?",
+    "item5_answer": "Yes. Employers can use the employer inquiry form to share manpower requirements. Our team will review the requirement and connect with suitable hiring support.",
+    "item6_question": "How can I contact Trendy Fortune directly?",
+    "item6_answer": "You can call us, email us, visit the office, or use the WhatsApp button on the website for quick assistance."
+  },
+  "industries": {
+    "badge": "Industries We Serve",
+    "title": "Empowering Key Global Sectors",
+    "description": "We provide skilled, semi-skilled, and general workers trained specifically to meet compliance regulations of various core international sectors.",
+    "items": {
+      "construction": "Construction",
+      "hospitality": "Hospitality",
+      "healthcare": "Healthcare",
+      "manufacturing": "Manufacturing",
+      "logistics": "Logistics",
+      "security": "Security",
+      "oilGas": "Oil & Gas",
+      "retail": "Retail"
+    }
+  },
+  "jobsPage": {
+    "titlePrefix": "Jobs in",
+    "subtitle": "Explore premium, verified overseas placements. Secure complete emigration support, visa assistance, and verified employers in {country}.",
+    "labels": {
+      "category": "Category",
+      "jobType": "Job Type",
+      "experience": "Experience",
+      "salaryOffered": "Salary Offered",
+      "posted": "Posted"
+    },
+    "buttons": {
+      "applyNow": "Apply Now",
+      "inquire": "Inquire",
+      "whatsapp": "Ask on WhatsApp",
+      "viewMore": "View More",
+      "startHere": "Start here"
+    },
+    "badges": {
+      "premium": "Premium",
+      "urgent": "Urgent"
+    },
+    "empty": {
+      "title": "No active jobs available for this country right now.",
+      "description": "Please check again later or contact us on WhatsApp."
+    }
+  },
+  "appointmentPage": {
+    "title": "Book Appointment",
+    "subtitle": "Schedule a meeting with Trendy Fortune Overseas for jobs or B2B partnership discussion.",
+    "visitorType": "I am a",
+    "candidateOption": "Candidate / Job Seeker",
+    "partnerOption": "B2B Partner",
+    "appId": "Application ID",
+    "fullName": "Full Name",
+    "companyName": "Company / Partner Name",
+    "contactPerson": "Contact Person Name",
+    "phone": "Mobile Number",
+    "email": "Email Address",
+    "appType": "Appointment Type",
+    "onlineApp": "Online Appointment",
+    "officeVisit": "Office Visit",
+    "prefDate": "Preferred Date",
+    "prefTime": "Preferred Time",
+    "notes": "Notes",
+    "notesOptional": "Notes (Optional)",
+    "partnerNotes": "Partnership Details / Notes",
+    "bookBtn": "Book Appointment",
+    "bookingText": "Booking appointment...",
+    "successTitle": "Appointment scheduled successfully",
+    "copyBtn": "Copy Appointment ID",
+    "whatsappBtn": "Continue on WhatsApp",
+    "backHome": "Back to Home"
   }
 }

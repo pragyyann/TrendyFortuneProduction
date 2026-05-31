@@ -16,12 +16,14 @@ const MESSAGES_MAP = { en, hi, bn, ta, ml };
 interface LanguageContextType {
   locale: Locale;
   setLocale: (locale: Locale) => void;
+  sessionLocale: Locale | null;
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [locale, setLocaleState] = useState<Locale>("en");
+  const [sessionLocale, setSessionLocale] = useState<Locale | null>(null);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -37,13 +39,14 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const setLocale = (newLocale: Locale) => {
     localStorage.setItem("trendy_locale", newLocale);
     setLocaleState(newLocale);
+    setSessionLocale(newLocale);
     window.dispatchEvent(new Event("locale-changed"));
   };
 
   // Render provider with current locale (defaults to "en" on server/first render to avoid hydration mismatch)
   return (
-    <LanguageContext.Provider value={{ locale, setLocale }}>
-      <NextIntlClientProvider locale={locale} messages={MESSAGES_MAP[locale]}>
+    <LanguageContext.Provider value={{ locale, setLocale, sessionLocale }}>
+      <NextIntlClientProvider locale={locale} messages={MESSAGES_MAP[locale]} timeZone="Asia/Kolkata">
         <div key={mounted ? "hydrated" : "server"}>
           {children}
         </div>

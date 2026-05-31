@@ -14,7 +14,8 @@ export function Hero() {
   const whatsappUrl = getWhatsAppLink(locale);
 
   const scrollToForm = (formType: "seeker" | "employer") => {
-    const element = document.getElementById("lead-forms");
+    const targetId = formType === "seeker" ? "job-seeker" : "employer";
+    const element = document.getElementById(targetId);
     if (element) {
       const offset = 80;
       const bodyRect = document.body.getBoundingClientRect().top;
@@ -27,12 +28,7 @@ export function Hero() {
         behavior: "smooth"
       });
 
-      // Switch form tab
-      setTimeout(() => {
-        const tabId = formType === "seeker" ? "tab-seeker" : "tab-employer";
-        const trigger = document.getElementById(tabId);
-        if (trigger) trigger.click();
-      }, 500);
+      window.location.hash = `#${targetId}`;
     }
   };
 
@@ -53,13 +49,13 @@ export function Hero() {
             className="w-full bg-white/80 border border-white/60 shadow-[0_24px_50px_rgba(148,163,184,0.06)] rounded-[2.5rem] p-8 md:p-10 space-y-6 relative z-10"
           >
             {/* Tagline */}
-            <div className="inline-flex items-center gap-2 bg-slate-100 border border-slate-200/50 px-4 py-1.5 rounded-full text-sm font-semibold text-[#0B192C]">
-              <span className="flex h-2 w-2 rounded-full bg-[#10B981] animate-ping" />
+            <div className="inline-flex items-center gap-2 bg-[#FAFAF7] border border-[#B6925B]/30 px-4 py-1.5 rounded-full text-sm font-semibold text-[#071426] shadow-sm">
+              <span className="flex h-2.5 w-2.5 rounded-full bg-[#10B981] animate-pulse" />
               {t("badge")}
             </div>
 
             {/* Headline */}
-            <h1 className="text-4xl sm:text-5xl lg:text-[2.6rem] xl:text-[2.85rem] font-display font-extrabold text-[#0B192C] leading-[1.2] tracking-tight">
+            <h1 className="text-4xl sm:text-5xl lg:text-[2.6rem] xl:text-[2.85rem] font-display font-extrabold text-[#071426] leading-[1.2] tracking-tight">
               {t("title")}
             </h1>
 
@@ -94,18 +90,18 @@ export function Hero() {
                 onClick={() => scrollToForm("seeker")}
                 variant="primary"
                 size="lg"
-                className="gap-2.5 shadow-lg shadow-slate-900/10 cursor-pointer whitespace-nowrap"
+                className="gap-2.5 shadow-xl shadow-slate-900/10 cursor-pointer whitespace-nowrap bg-[#071426] hover:bg-[#122237] border border-[#B6925B]/20 text-white hover:shadow-[0_0_20px_rgba(182,146,91,0.3)] transition-all duration-300"
               >
-                <Briefcase className="h-5 w-5 shrink-0" />
+                <Briefcase className="h-5 w-5 shrink-0 text-[#B6925B]" />
                 {t("applyBtn")}
               </Button>
               <Button
                 onClick={() => scrollToForm("employer")}
                 variant="outline"
                 size="lg"
-                className="gap-2.5 bg-white hover:bg-slate-50 cursor-pointer whitespace-nowrap"
+                className="gap-2.5 bg-white border-2 border-[#B6925B]/30 hover:border-[#B6925B] text-[#071426] hover:bg-[#FAFAF7] hover:shadow-lg transition-all duration-300 cursor-pointer whitespace-nowrap"
               >
-                <Users className="h-5 w-5 shrink-0" />
+                <Users className="h-5 w-5 shrink-0 text-[#B6925B]" />
                 {t("hireBtn")}
               </Button>
             </div>
@@ -116,8 +112,10 @@ export function Hero() {
             initial={{ opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1.1, delay: 0.15, ease: "easeOut" }}
-            className="w-full lg:absolute lg:right-[-2%] xl:right-[-4%] lg:w-[60%] xl:w-[62%] lg:h-[88%] lg:max-h-[720px] flex items-center justify-center z-0 lg:pointer-events-none"
+            className="w-full lg:absolute lg:right-[-2%] xl:right-[-4%] lg:w-[60%] xl:w-[62%] lg:h-[94%] lg:max-h-[780px] flex items-center justify-center z-0 lg:pointer-events-none relative"
           >
+            {/* Soft gold/emerald radial glowing background map shadow */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -z-10 w-[550px] h-[550px] bg-gradient-to-tr from-[#B6925B]/8 via-[#10B981]/4 to-transparent rounded-full blur-[110px] pointer-events-none animate-pulse" />
             <div className="w-full h-full pointer-events-auto">
               <InteractiveWorldMap />
             </div>

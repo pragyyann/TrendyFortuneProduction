@@ -1,8 +1,9 @@
 "use client";
 
-import { Globe2, Mail, Phone, MapPin, ArrowUpRight } from "lucide-react";
+import { Mail, Phone, MapPin, ArrowUpRight } from "lucide-react";
 import { CONTACT_INFO, SERVICES } from "@/constants";
 import { useTranslations } from "next-intl";
+import Image from "next/image";
 
 export function Footer() {
   const tNavbar = useTranslations("navbar");
@@ -33,7 +34,7 @@ export function Footer() {
 
   const handleApplyNow = (e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => {
     e.preventDefault();
-    const element = document.getElementById("lead-forms");
+    const element = document.getElementById("job-seeker");
     if (element) {
       const offset = 80;
       const bodyRect = document.body.getBoundingClientRect().top;
@@ -46,10 +47,7 @@ export function Footer() {
         behavior: "smooth"
       });
       
-      setTimeout(() => {
-        const trigger = document.getElementById("tab-seeker");
-        if (trigger) trigger.click();
-      }, 500);
+      window.location.hash = "#job-seeker";
     }
   };
 
@@ -62,9 +60,15 @@ export function Footer() {
           
           {/* Brand Col */}
           <div className="lg:col-span-4 space-y-6">
-            <a href="#home" onClick={(e) => handleScrollTo(e, "#home")} className="flex items-center gap-2 group focus:outline-none">
-              <div className="bg-[#1E3E62] text-[#B6925B] p-2 rounded-xl group-hover:scale-105 transition-transform">
-                <Globe2 className="h-6 w-6" />
+            <a href="#home" onClick={(e) => handleScrollTo(e, "#home")} className="flex items-center gap-3 group focus:outline-none">
+              <div className="relative h-11 w-11 group-hover:scale-105 transition-transform flex items-center justify-center shrink-0">
+                <Image
+                  src="/images/Untitled design (2).png"
+                  alt="Trendy Fortune Overseas logo"
+                  fill
+                  sizes="44px"
+                  className="object-contain"
+                />
               </div>
               <span className="font-display font-bold text-xl text-white tracking-tight">
                 Trendy <span className="text-[#B6925B]">Fortune</span>
@@ -109,8 +113,18 @@ export function Footer() {
                 </a>
               </li>
               <li>
-                <a href="#lead-forms" onClick={handleApplyNow} className="text-[#B6925B] hover:text-[#B6925B]/80 font-semibold transition-colors focus:outline-none inline-flex items-center gap-0.5">
+                <a href="#job-seeker" onClick={handleApplyNow} className="text-[#B6925B] hover:text-[#B6925B]/80 font-semibold transition-colors focus:outline-none inline-flex items-center gap-0.5">
                   {tNavbar("applyNow")} <ArrowUpRight className="h-3 w-3" />
+                </a>
+              </li>
+              <li>
+                <a href="/appointment" className="hover:text-[#B6925B] transition-colors focus:outline-none">
+                  {tNavbar("bookAppointment") || "Book Appointment"}
+                </a>
+              </li>
+              <li>
+                <a href="/pay" className="hover:text-[#B6925B] transition-colors focus:outline-none">
+                  {tNavbar("completePayment") || "Complete Payment"}
                 </a>
               </li>
             </ul>
@@ -120,7 +134,7 @@ export function Footer() {
           <div className="lg:col-span-3 space-y-5">
             <h4 className="font-display font-extrabold text-sm text-white uppercase tracking-wider">{tNavbar("services")}</h4>
             <ul className="space-y-3 text-sm">
-              {SERVICES.slice(0, 4).map((s) => (
+              {SERVICES.filter(s => s.active !== false).map((s) => (
                 <li key={s.id}>
                   <a href="#services" onClick={(e) => handleScrollTo(e, "#services")} className="hover:text-[#B6925B] transition-colors">
                     {tServices(getServiceTitleKey(s.id))}
@@ -161,8 +175,8 @@ export function Footer() {
             © {new Date().getFullYear()} Trendy Fortune. {tFooter("rights")}
           </div>
           <div className="flex gap-6">
-            <a href="#lead-forms" onClick={handleApplyNow} className="hover:text-slate-400">Terms of Service</a>
-            <a href="#lead-forms" onClick={handleApplyNow} className="hover:text-slate-400">Privacy Policy</a>
+            <a href="#job-seeker" onClick={handleApplyNow} className="hover:text-slate-400">Terms of Service</a>
+            <a href="#job-seeker" onClick={handleApplyNow} className="hover:text-slate-400">Privacy Policy</a>
           </div>
         </div>
 

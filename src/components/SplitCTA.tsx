@@ -9,7 +9,8 @@ export function SplitCTA() {
   const t = useTranslations("split");
 
   const scrollToForm = (formType: "seeker" | "employer") => {
-    const element = document.getElementById("lead-forms");
+    const targetId = formType === "seeker" ? "job-seeker" : "employer";
+    const element = document.getElementById(targetId);
     if (element) {
       const offset = 80;
       const bodyRect = document.body.getBoundingClientRect().top;
@@ -22,12 +23,7 @@ export function SplitCTA() {
         behavior: "smooth"
       });
 
-      // Switch form tab
-      setTimeout(() => {
-        const tabId = formType === "seeker" ? "tab-seeker" : "tab-employer";
-        const trigger = document.getElementById(tabId);
-        if (trigger) trigger.click();
-      }, 500);
+      window.location.hash = `#${targetId}`;
     }
   };
 

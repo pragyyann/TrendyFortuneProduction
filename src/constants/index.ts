@@ -11,6 +11,7 @@ export interface Service {
   title: string;
   description: string;
   iconName: string;
+  active?: boolean;
 }
 
 export interface Industry {
@@ -26,13 +27,13 @@ export interface Step {
 }
 
 export const CONTACT_INFO = {
-  phone: "+91 9220809078",
-  phoneRaw: "+919220809078",
+  phone: "+91 8700917348",
+  phoneRaw: "+918700917348",
   email: "info@trendyfortune.com",
-  address: "Plot No. 42, Sector 11, CBD Belapur, Navi Mumbai, Maharashtra 400614, India",
-  whatsappUrl: "https://wa.me/919220809078?text=Hi%20Trendy%20Fortune,%20I%20want%20to%20know%20more%20about%20overseas%20jobs",
-  whatsappNumber: "+91 9220809078",
-  mapEmbedUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3771.8039328227653!2d73.01633517596001!3d19.028387053508104!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7c3e7b41e8c07%3A0xc023a1a1f33f86!2sCBD%20Belapur%2C%20Navi%20Mumbai%2C%20Maharashtra!5e0!3m2!1sen!2sin!4v1716768393849!5m2!1sen!2sin"
+  address: "Office No-C616-C617, NoidaOne Tower C, Sector 62, Noida, U.P. - 201309",
+  whatsappUrl: "https://wa.me/918700917348?text=Hi%20Trendy%20Fortune%2C%20I%20want%20to%20know%20more%20about%20overseas%20jobs.",
+  whatsappNumber: "+91 8700917348",
+  mapEmbedUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3502.1384021571477!2d77.3621457!3d28.6255734!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390ce5a5d1cb37ab%3A0x6b8bc27f10b777a2!2sNoidaOne%20Tower%20C%2C%20Sector%2062%2C%20Noida%2C%20Uttar%20Pradesh%20201309!5e0!3m2!1sen!2sin!4v1716768393849!5m2!1sen!2sin"
 };
 
 export const COUNTRIES: Country[] = [
@@ -99,37 +100,43 @@ export const SERVICES: Service[] = [
     id: "job-placement",
     title: "Overseas Job Placement",
     description: "End-to-end recruitment matching skilled Indian professionals with verified employers worldwide.",
-    iconName: "Briefcase"
+    iconName: "Briefcase",
+    active: true
   },
   {
     id: "manpower-supply",
     title: "Manpower Supply",
     description: "Reliable bulk and specialized labor supply for global corporations in diverse industrial sectors.",
-    iconName: "Users"
+    iconName: "Users",
+    active: true
   },
   {
     id: "work-permit",
     title: "Work Permit Assistance",
     description: "Seamless processing support for visas, documentation validation, and embassy clearance.",
-    iconName: "FileText"
+    iconName: "FileText",
+    active: true
   },
   {
     id: "study-overseas",
     title: "Study Overseas",
     description: "Comprehensive university selection guidance and application support for top study destinations.",
-    iconName: "GraduationCap"
+    iconName: "GraduationCap",
+    active: false
   },
   {
     id: "study-visa",
     title: "Study Visa Support",
     description: "Step-by-step guidance for education loan proof, document checklist, and visa interviews.",
-    iconName: "FileSpreadsheet"
+    iconName: "FileSpreadsheet",
+    active: false
   },
   {
     id: "career-consulting",
     title: "Career Consulting",
     description: "Expert profile building, international resume formatting, and interview preparation coaching.",
-    iconName: "Compass"
+    iconName: "Compass",
+    active: false
   }
 ];
 
@@ -168,10 +175,10 @@ export const HOW_IT_WORKS_STEPS: Step[] = [
 ];
 
 export const NAV_LINKS = [
-  { label: "Home", href: "#home" },
-  { label: "Jobs Abroad", href: "#jobs-abroad" },
-  { label: "Services", href: "#services" },
-  { label: "For Employers", href: "#for-employers" },
-  { label: "About", href: "#about" },
-  { label: "Contact", href: "#contact" }
+  { label: "Home", href: "/#home" },
+  { label: "Jobs Abroad", href: "/#jobs-abroad" },
+  { label: "Services", href: "/#services" },
+  { label: "About", href: "/#about" },
+  { label: "For Employers", href: "/#employer" },
+  { label: "Contact", href: "/#contact" }
 ];

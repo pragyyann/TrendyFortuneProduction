@@ -13,22 +13,22 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     return (
       <button
         className={cn(
-          "inline-flex items-center justify-center rounded-xl font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 active:scale-[0.98]",
+          "inline-flex items-center justify-center rounded-xl font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 active:scale-[0.98]",
           // Variants
           {
-            "bg-[#0B192C] text-white hover:bg-[#1E3E62] shadow-sm focus-visible:ring-[#0B192C]":
+            "bg-[#071426] text-white hover:bg-[#122237] shadow-sm focus-visible:ring-[#071426]":
               variant === "primary",
-            "bg-[#f1f5f9] text-[#0B192C] hover:bg-[#e2e8f0] focus-visible:ring-[#cbd5e1]":
+            "bg-[#f1f5f9] text-[#071426] hover:bg-[#e2e8f0] focus-visible:ring-[#cbd5e1]":
               variant === "secondary",
-            "bg-[#B6925B] text-white hover:bg-[#A37F48] shadow-sm focus-visible:ring-[#B6925B]":
+            "bg-[#B8945E] text-white hover:bg-[#A37F48] shadow-sm focus-visible:ring-[#B8945E]":
               variant === "accent",
             "bg-[#10B981] text-white hover:bg-[#059669] shadow-sm focus-visible:ring-[#10B981]":
               variant === "accent-emerald",
-            "border-2 border-[#e2e8f0] bg-transparent text-[#0B192C] hover:bg-[#f8fafc] hover:border-[#cbd5e1] focus-visible:ring-[#0B192C]":
+            "border-2 border-[#e2e8f0] bg-transparent text-[#071426] hover:bg-[#f8fafc] hover:border-[#cbd5e1] focus-visible:ring-[#071426]":
               variant === "outline",
-            "bg-transparent text-[#0B192C] hover:bg-[#f1f5f9] focus-visible:ring-[#0B192C]":
+            "bg-transparent text-[#071426] hover:bg-[#f1f5f9] focus-visible:ring-[#071426]":
               variant === "ghost",
-            "bg-transparent text-[#B6925B] underline-offset-4 hover:underline hover:text-[#A37F48] p-0 h-auto":
+            "bg-transparent text-[#B8945E] underline-offset-4 hover:underline hover:text-[#A37F48] p-0 h-auto":
               variant === "link",
           },
           // Sizes
