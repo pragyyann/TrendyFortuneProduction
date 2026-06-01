@@ -48,7 +48,9 @@ export function LanguageSwitcher({
   };
 
   const activeLocale = sessionLocale || "en";
-  const displayLabel = languageLabels[activeLocale] || "English · हिंदी";
+  const displayLabel = isMobileHeader 
+    ? activeLocale.toUpperCase() 
+    : (languageLabels[activeLocale] || "English · हिंदी");
 
   // Mode 1: Mobile drawer grid switcher (nested inside hamburger menu)
   if (isMobile) {
@@ -89,20 +91,22 @@ export function LanguageSwitcher({
         onClick={() => setIsOpen(!isOpen)}
         type="button"
         className={cn(
-          "inline-flex items-center justify-center gap-1.5 sm:gap-2 rounded-xl border border-[#B8945E]/30 bg-white/5 text-white font-semibold hover:bg-white/10 hover:border-[#B8945E]/50 hover:shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#B8945E] transition-all cursor-pointer shrink-0 whitespace-nowrap",
+          "inline-flex items-center justify-center gap-1 sm:gap-2 rounded-xl border border-[#B8945E]/30 bg-white/5 text-white font-semibold hover:bg-white/10 hover:border-[#B8945E]/50 hover:shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#B8945E] transition-all cursor-pointer shrink-0 whitespace-nowrap",
           isMobileHeader 
-            ? "h-10 px-2.5 sm:px-3 text-[12px] sm:text-[13px]" 
+            ? "h-9 px-2 text-xs" 
             : "h-11 px-4 text-sm"
         )}
         aria-haspopup="true"
         aria-expanded={isOpen}
         aria-label="Change language / भाषा बदलें"
       >
-        <Globe className="h-4 w-4 text-[#B6925B] shrink-0" />
+        <Globe className={cn("text-[#B6925B] shrink-0", isMobileHeader ? "h-3.5 w-3.5" : "h-4 w-4")} />
         <span className="font-sans tracking-wide">
           {displayLabel}
         </span>
-        <ChevronDown className={cn("h-3.5 w-3.5 text-slate-400 transition-transform duration-200 shrink-0", isOpen ? "transform rotate-180" : "")} />
+        {!isMobileHeader && (
+          <ChevronDown className={cn("h-3.5 w-3.5 text-slate-400 transition-transform duration-200 shrink-0", isOpen ? "transform rotate-180" : "")} />
+        )}
       </button>
 
       {isOpen && (

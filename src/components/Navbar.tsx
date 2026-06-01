@@ -123,7 +123,7 @@ export function Navbar() {
       <header
         className="fixed top-0 left-0 right-0 z-50 w-full bg-[#0B192C] border-b border-[#B8945E]/20 py-4 shadow-sm"
       >
-        <div className="max-w-screen-2xl mx-auto px-6 sm:px-8 xl:px-10">
+        <div className="max-w-screen-2xl mx-auto px-4 sm:px-8 xl:px-10">
           <div className="flex items-center justify-between gap-6">
             {/* Logo Group */}
             <div className="flex items-center shrink-0">
@@ -132,21 +132,21 @@ export function Navbar() {
                 onClick={(e) => handleScrollTo(e, "/#home")}
                 className="flex items-center gap-3 group focus:outline-none"
               >
-                <div className="relative h-14 w-14 md:h-20 md:w-20 group-hover:scale-105 transition-transform flex items-center justify-center shrink-0">
+                <div className="relative h-12 w-12 sm:h-14 sm:w-14 md:h-20 md:w-20 group-hover:scale-105 transition-transform flex items-center justify-center shrink-0">
                   <Image
                     src="/images/Untitled design (2).png"
                     alt="Trendy Fortune Overseas logo"
                     fill
-                    sizes="(max-width: 768px) 56px, 80px"
+                    sizes="(max-width: 768px) 48px, 80px"
                     className="object-contain"
                     priority
                   />
                 </div>
-                <div className="flex flex-col items-center select-none">
-                  <span className="font-serif font-extrabold text-lg md:text-xl text-[#B8945E] uppercase tracking-wide leading-none" style={{ fontFamily: "'Times New Roman', Times, serif" }}>
+                <div className="hidden sm:flex flex-col items-center select-none">
+                  <span className="font-serif font-extrabold text-base md:text-xl text-[#B8945E] uppercase tracking-wide leading-none" style={{ fontFamily: "'Times New Roman', Times, serif" }}>
                     TRENDY FORTUNE
                   </span>
-                  <span className="font-serif text-[10px] md:text-xs text-[#B8945E] uppercase tracking-[0.18em] text-center leading-none mt-1" style={{ fontFamily: "'Times New Roman', Times, serif" }}>
+                  <span className="font-serif text-[9px] md:text-xs text-[#B8945E] uppercase tracking-[0.18em] text-center leading-none mt-1" style={{ fontFamily: "'Times New Roman', Times, serif" }}>
                     OVERSEAS
                   </span>
                 </div>
@@ -211,11 +211,11 @@ export function Navbar() {
             </div>
 
             {/* Mobile Actions Container (Language Switcher outside Hamburger + Hamburger Toggle) */}
-            <div className="flex xl:hidden items-center gap-3 sm:gap-4 shrink-0">
+            <div className="flex xl:hidden items-center gap-1.5 xs:gap-2.5 shrink-0">
               <LanguageSwitcher isMobileHeader={true} />
               <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="p-2 rounded-xl text-white hover:bg-white/10 focus:outline-none cursor-pointer shrink-0 transition-colors"
+                className="p-1.5 rounded-xl text-white hover:bg-white/10 focus:outline-none cursor-pointer shrink-0 transition-colors"
                 aria-expanded={isOpen}
                 aria-label="Toggle navigation menu"
               >

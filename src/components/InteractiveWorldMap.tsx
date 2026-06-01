@@ -135,7 +135,7 @@ export function InteractiveWorldMap() {
 
   return (
     /* ---- FLUID RESPONSIVE CONTAINER ---- */
-    <div className="relative w-full h-full min-h-[380px] sm:min-h-[480px] md:min-h-[560px] lg:min-h-[660px] xl:min-h-[720px] flex items-center justify-center transition-all duration-500 overflow-visible" style={{ aspectRatio: "2 / 1" }}>
+    <div className="relative w-full h-full min-h-[160px] xs:min-h-[220px] sm:min-h-[350px] md:min-h-[450px] lg:min-h-[660px] xl:min-h-[720px] flex items-center justify-center transition-all duration-500 overflow-visible" style={{ aspectRatio: "2 / 1" }}>
 
       {/* ═══════════ AMBIENT BACKGROUND GLOW LAYERS ═══════════ */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[45%] w-[110%] h-[110%] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(182,146,91,0.12)_0%,transparent_70%)] pointer-events-none z-0" />
@@ -144,9 +144,9 @@ export function InteractiveWorldMap() {
 
       {/* ═══════════ USER INSTRUCTION BADGE ═══════════ */}
       <div className="absolute top-2 sm:top-4 md:top-6 left-1/2 -translate-x-1/2 z-30 pointer-events-none w-max max-w-[90%] text-center">
-        <div className="flex items-center justify-center gap-2 bg-[#0B192C]/90 backdrop-blur-sm border border-[#B6925B]/40 px-4 py-2 rounded-full shadow-lg">
-          <span className="w-2 h-2 rounded-full bg-[#B6925B] animate-pulse shrink-0" />
-          <span className="text-[10px] sm:text-xs md:text-sm font-sans font-bold tracking-wider text-white uppercase select-none">
+        <div className="flex items-center justify-center gap-1.5 sm:gap-2 bg-[#0B192C]/90 backdrop-blur-sm border border-[#B6925B]/40 px-2.5 py-1.5 sm:px-4 sm:py-2 rounded-full shadow-lg">
+          <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#B6925B] animate-pulse shrink-0" />
+          <span className="text-[9px] sm:text-xs md:text-sm font-sans font-bold tracking-wider text-white uppercase select-none">
             {t("mapInstruction") || "Tap any country dot to view available jobs"}
           </span>
         </div>
@@ -234,7 +234,7 @@ export function InteractiveWorldMap() {
             >
               <a
                 href={`/jobs/${country.country_slug}`}
-                className="relative flex items-center justify-center w-6 h-6 cursor-pointer focus:outline-none pointer-events-auto"
+                className="relative flex items-center justify-center w-5 h-5 sm:w-6 sm:h-6 cursor-pointer focus:outline-none pointer-events-auto"
                 aria-label={`View jobs in ${country.country_name}`}
               >
                 {/* Focus ring for keyboard accessibility */}
@@ -242,13 +242,13 @@ export function InteractiveWorldMap() {
 
                 {/* Pulsing gold glow ring animation on hover and focus */}
                 <span
-                  className="absolute w-7 h-7 rounded-full bg-[#B6925B]/40 opacity-0 group-hover:opacity-100 group-hover:animate-ping group-focus-visible:opacity-100 group-focus-visible:animate-ping pointer-events-none transition-all duration-300"
+                  className="absolute w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-[#B6925B]/40 opacity-0 group-hover:opacity-100 group-hover:animate-ping group-focus-visible:opacity-100 group-focus-visible:animate-ping pointer-events-none transition-all duration-300"
                   style={{ animationDuration: "1.2s" }}
                 />
 
                 {/* Marker body: navy shell with glowing gold/emerald core */}
-                <span className="relative flex items-center justify-center w-5 h-5 rounded-full bg-[#0B192C] border border-[#B6925B]/40 shadow-[0_0_12px_rgba(182,146,91,0.6)] group-hover:shadow-[0_0_20px_rgba(16,185,129,0.9)] group-hover:scale-[1.3] group-hover:border-[#10B981] group-focus-visible:scale-[1.3] group-focus-visible:border-[#10B981] transition-all duration-250">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#B6925B] group-hover:bg-[#10B981] transition-colors duration-200" />
+                <span className="relative flex items-center justify-center w-3.5 h-3.5 sm:w-5 sm:h-5 rounded-full bg-[#0B192C] border border-[#B6925B]/40 shadow-[0_0_12px_rgba(182,146,91,0.6)] group-hover:shadow-[0_0_20px_rgba(16,185,129,0.9)] group-hover:scale-[1.3] group-hover:border-[#10B981] group-focus-visible:scale-[1.3] group-focus-visible:border-[#10B981] transition-all duration-250">
+                  <span className="w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-[#B6925B] group-hover:bg-[#10B981] transition-colors duration-200" />
                 </span>
 
                 {/* ── Premium Frosted Glass Tooltip Card (country name, flag and gold clickable button) ── */}

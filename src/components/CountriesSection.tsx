@@ -56,16 +56,16 @@ export function CountriesSection() {
           <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-32 bg-gradient-to-r from-white via-white/80 to-transparent z-10 pointer-events-none" />
           <div className="absolute right-0 top-0 bottom-0 w-16 sm:w-32 bg-gradient-to-l from-white via-white/80 to-transparent z-10 pointer-events-none" />
 
-          <div className="flex gap-8 py-4 px-4 mx-auto justify-center overflow-hidden w-full max-w-7xl">
+          <div className="flex gap-3 sm:gap-8 py-4 px-4 mx-auto justify-center overflow-hidden w-full max-w-7xl">
             {Array.from({ length: 4 }).map((_, index) => (
               <div
                 key={`skeleton-${index}`}
-                className="flex-shrink-0 w-[240px] sm:w-[270px] p-6 rounded-2xl bg-white border border-slate-100 shadow-sm relative overflow-hidden flex flex-col items-center justify-between cursor-default"
+                className="flex-shrink-0 w-[102px] sm:w-[270px] p-3 sm:p-6 rounded-xl sm:rounded-2xl bg-white border border-slate-100 shadow-sm relative overflow-hidden flex flex-col items-center justify-between cursor-default"
               >
                 <div className="absolute top-0 left-0 right-0 h-[3px] bg-slate-100" />
-                <div className="w-20 sm:w-24 h-12 sm:h-14 rounded-lg bg-slate-100 animate-pulse mb-4 mt-2" />
-                <div className="h-6 w-32 bg-slate-100 animate-pulse rounded-md mb-6 mt-1" />
-                <div className="w-full h-11 bg-slate-100 animate-pulse rounded-xl" />
+                <div className="w-12 h-8 sm:w-24 sm:h-14 rounded sm:rounded-lg bg-slate-100 animate-pulse mb-2 sm:mb-4 mt-1 sm:mt-2" />
+                <div className="h-4 sm:h-6 w-16 sm:w-32 bg-slate-100 animate-pulse rounded mb-4 sm:mb-6 mt-0.5 sm:mt-1" />
+                <div className="w-full h-8 sm:h-11 bg-slate-100 animate-pulse rounded-lg sm:rounded-xl" />
               </div>
             ))}
           </div>
@@ -99,7 +99,7 @@ export function CountriesSection() {
         <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-32 bg-gradient-to-r from-white via-white/80 to-transparent z-10 pointer-events-none" />
         <div className="absolute right-0 top-0 bottom-0 w-16 sm:w-32 bg-gradient-to-l from-white via-white/80 to-transparent z-10 pointer-events-none" />
 
-        <div className="flex animate-marquee gap-8 py-4 px-4">
+        <div className="flex animate-marquee gap-3 sm:gap-8 py-4 px-4">
           {marqueeItems.map((country: Country, index: number) => {
             const FlagComponents = Flags as unknown as Record<string, React.ComponentType<{ className?: string; title?: string }>>;
             const FlagComponent = FlagComponents[country.country_code];
@@ -107,13 +107,13 @@ export function CountriesSection() {
             return (
               <div
                 key={`${country.country_slug}-${index}`}
-                className="group flex-shrink-0 w-[240px] sm:w-[270px] p-6 rounded-2xl bg-white border border-slate-100 shadow-sm hover:border-[#B6925B]/40 hover:shadow-xl transition-all duration-300 relative overflow-hidden flex flex-col items-center justify-between cursor-default"
+                className="group flex-shrink-0 w-[102px] sm:w-[270px] p-3 sm:p-6 rounded-xl sm:rounded-2xl bg-white border border-slate-100 shadow-sm hover:border-[#B6925B]/40 hover:shadow-xl transition-all duration-300 relative overflow-hidden flex flex-col items-center justify-between cursor-default"
               >
                 {/* Gold Highlight top gradient bar */}
                 <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-[#B6925B] to-[#D4AF37]" />
 
                 {/* Flag */}
-                <div className="w-20 sm:w-24 h-12 sm:h-14 rounded-lg overflow-hidden border border-slate-200 shadow-sm flex-shrink-0 mb-4 mt-2 transition-transform duration-300 group-hover:scale-105">
+                <div className="w-12 h-8 sm:w-24 sm:h-14 rounded sm:rounded-lg overflow-hidden border border-slate-200 shadow-sm flex-shrink-0 mb-2 sm:mb-4 mt-1 sm:mt-2 transition-transform duration-300 group-hover:scale-105">
                   {FlagComponent ? (
                     <FlagComponent className="w-full h-full object-cover" title={`${country.country_name} Flag`} />
                   ) : (
@@ -122,17 +122,17 @@ export function CountriesSection() {
                 </div>
 
                 {/* Country Name */}
-                <h3 className="font-display font-extrabold text-[#0B192C] text-lg sm:text-xl text-center tracking-tight mb-6 mt-1 transition-colors duration-300 group-hover:text-[#B6925B] truncate w-full px-2">
+                <h3 className="font-display font-extrabold text-[#0B192C] text-[11px] xs:text-xs sm:text-xl text-center tracking-tight mb-3 sm:mb-6 mt-0.5 sm:mt-1 transition-colors duration-300 group-hover:text-[#B6925B] truncate w-full px-1">
                   {country.country_name}
                 </h3>
 
                 {/* View Jobs Button */}
                 <a
                   href={`/jobs/${country.country_slug}`}
-                  className="w-full h-11 min-h-[44px] flex items-center justify-center gap-2 rounded-xl bg-[#0B192C] text-white hover:bg-[#B6925B] font-bold text-sm transition-all duration-300 active:scale-[0.98] shadow-md hover:shadow-lg cursor-pointer"
+                  className="w-full h-8 min-h-[32px] sm:h-11 sm:min-h-[44px] flex items-center justify-center gap-1 sm:gap-2 rounded-lg sm:rounded-xl bg-[#0B192C] text-white hover:bg-[#B6925B] font-bold text-[10px] sm:text-sm transition-all duration-300 active:scale-[0.98] shadow-sm sm:shadow-md hover:shadow-lg cursor-pointer"
                 >
                   <span>{t("viewJobs")}</span>
-                  <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 flex-shrink-0" />
+                  <ArrowRight className="h-3 w-3 sm:h-4 sm:w-4 transition-transform duration-300 group-hover:translate-x-1 flex-shrink-0" />
                 </a>
               </div>
             );

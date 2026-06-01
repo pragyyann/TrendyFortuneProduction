@@ -11,6 +11,8 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 
+import { useRouter } from "next/navigation";
+
 interface JobSeekerFormProps {
   prefillCountry?: string;
   prefillJobRole?: string;
@@ -34,6 +36,7 @@ export function JobSeekerForm({
   hiddenCountrySlug,
   onSuccess
 }: JobSeekerFormProps) {
+  const router = useRouter();
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [seekerCvName, setSeekerCvName] = React.useState<string | null>(null);
@@ -41,6 +44,8 @@ export function JobSeekerForm({
   const [emailStatus, setEmailStatus] = React.useState<string | null>(null);
   const [copiedId, setCopiedId] = React.useState(false);
   const [isImmediatePaying, setIsImmediatePaying] = React.useState(false);
+  const [seekerCvSize, setSeekerCvSize] = React.useState<string | null>(null);
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
   const [immediatePaymentError, setImmediatePaymentError] = React.useState<string | null>(null);
 
   const seekerForm = useForm<JobSeekerFormValues>({
@@ -168,6 +173,10 @@ export function JobSeekerForm({
     setEmailStatus(null);
     seekerForm.reset();
     setSeekerCvName(null);
+    setSeekerCvSize(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
   };
 
   const getSuccessWhatsAppLink = (appId: string) => {
@@ -227,7 +236,8 @@ export function JobSeekerForm({
       }
 
       // Show success state with application ID returned from backend response
-      setSubmittedApplicationId(result.application_id);
+      const applicationId = result.application_id;
+      setSubmittedApplicationId(applicationId);
       if (result.email_status) {
         setEmailStatus(result.email_status);
       }
@@ -238,8 +248,16 @@ export function JobSeekerForm({
         type: "success"
       });
 
+      if (applicationId) {
+        router.push(`?success=true&ref=${encodeURIComponent(applicationId)}`);
+      }
+
       seekerForm.reset();
       setSeekerCvName(null);
+      setSeekerCvSize(null);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
     } catch (err) {
       toast({
         title: "Submission Failed",
@@ -258,31 +276,49 @@ export function JobSeekerForm({
       const allowedTypes = [
         "application/pdf", 
         "application/msword", 
-        "application/vnd.openxmlformats-officedocument.wordprocessingml.document", 
-        "image/jpeg", 
-        "image/png"
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
       ];
       
       if (file.size > maxBytes) {
         toast({
           title: "File Too Large",
-          description: "Please upload a file smaller than 5MB.",
+          description: "CV file size should be under 5MB.",
           type: "error"
         });
+        if (fileInputRef.current) {
+          fileInputRef.current.value = "";
+        }
         return;
       }
       
-      if (!allowedTypes.includes(file.type) && !file.name.match(/\.(pdf|doc|docx|jpg|jpeg|png)$/i)) {
+      if (!allowedTypes.includes(file.type) && !file.name.match(/\.(pdf|doc|docx)$/i)) {
         toast({
           title: "Invalid File Type",
-          description: "Accepted formats: PDF, DOC, DOCX, JPG, PNG.",
+          description: "Please upload CV in PDF, DOC, or DOCX format.",
           type: "error"
         });
+        if (fileInputRef.current) {
+          fileInputRef.current.value = "";
+        }
         return;
       }
       
+      const sizeStr = file.size > 1024 * 1024 
+        ? `${(file.size / (1024 * 1024)).toFixed(2)} MB`
+        : `${(file.size / 1024).toFixed(1)} KB`;
+        
       setSeekerCvName(file.name);
+      setSeekerCvSize(sizeStr);
       seekerForm.setValue("cvFile", file);
+    }
+  };
+
+  const handleRemoveCv = () => {
+    setSeekerCvName(null);
+    setSeekerCvSize(null);
+    seekerForm.setValue("cvFile", undefined);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
     }
   };
 
@@ -590,31 +626,53 @@ export function JobSeekerForm({
         </div>
       </div>
 
-      {/* 8. Upload CV / Passport Copy / Photo (Optional) */}
+      {/* 8. Upload CV (Optional) */}
       <div className="space-y-2 font-sans">
         <label className="text-sm font-semibold text-slate-700 block">
-          Upload CV / Passport Copy / Photo <span className="text-xs font-normal text-slate-400">(optional)</span>
+          Upload CV <span className="text-xs font-normal text-slate-400">(optional)</span>
         </label>
-        <div className="border-2 border-dashed border-slate-200 hover:border-[#B6925B] transition-colors rounded-2xl p-6 flex flex-col items-center justify-center bg-slate-50 relative group">
-          <input
-            type="file"
-            accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
-            onChange={handleCvChange}
-            className="absolute inset-0 opacity-0 cursor-pointer w-full h-full z-10"
-          />
-          {seekerCvName ? (
-            <div className="flex items-center gap-2 text-emerald-600 font-semibold text-sm">
-              <Check className="h-5 w-5 bg-emerald-100 p-0.5 rounded-full shrink-0" />
-              <span>{seekerCvName}</span>
+        {seekerCvName ? (
+          <div className="border-2 border-solid border-slate-100 rounded-2xl p-4 flex items-center justify-between bg-slate-50 relative">
+            <div className="flex items-center gap-3">
+              <div className="bg-emerald-100 text-emerald-600 p-2 rounded-xl shrink-0">
+                <Check className="h-5 w-5" />
+              </div>
+              <div className="text-left min-w-0">
+                <p className="text-sm font-semibold text-slate-800 truncate max-w-[150px] sm:max-w-[320px]">
+                  {seekerCvName}
+                </p>
+                {seekerCvSize && (
+                  <p className="text-xs text-slate-400 font-medium">{seekerCvSize}</p>
+                )}
+              </div>
             </div>
-          ) : (
-            <>
-              <FileUp className="h-8 w-8 text-slate-400 mb-2 group-hover:scale-105 group-hover:text-[#B6925B] transition-all" />
-              <span className="text-sm text-slate-600 font-semibold">Click to select file</span>
-              <span className="text-xs text-slate-400 mt-1">Accepted formats: PDF, DOC, DOCX, JPG, PNG (Max 5MB)</span>
-            </>
-          )}
-        </div>
+            <button
+              type="button"
+              onClick={handleRemoveCv}
+              className="px-3 py-1.5 rounded-lg border border-red-200 hover:border-red-500 hover:bg-red-50 text-red-600 hover:text-red-700 font-semibold text-xs transition-colors cursor-pointer select-none shrink-0"
+            >
+              Remove
+            </button>
+          </div>
+        ) : (
+          <div className="border-2 border-dashed border-slate-200 hover:border-[#B6925B] transition-colors rounded-2xl p-6 flex flex-col items-center justify-center bg-slate-50 relative group">
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept=".pdf,.doc,.docx"
+              onChange={handleCvChange}
+              className="absolute inset-0 opacity-0 cursor-pointer w-full h-full z-10"
+            />
+            <FileUp className="h-8 w-8 text-slate-400 mb-2 group-hover:scale-105 group-hover:text-[#B6925B] transition-all" />
+            <span className="text-sm text-slate-600 font-semibold">Click to select file</span>
+            <span className="text-xs text-slate-400 mt-1 text-center px-4 leading-normal">
+              Accepted formats: PDF, DOC, DOCX (Max 5MB)
+            </span>
+            <span className="text-[10px] text-slate-400 mt-0.5 text-center px-4 leading-normal font-medium">
+              Our team may ask for the CV again on WhatsApp if required.
+            </span>
+          </div>
+        )}
       </div>
 
       {/* 9. Message / Extra Details */}

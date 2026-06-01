@@ -52,7 +52,7 @@ export function Footer() {
   };
 
   return (
-    <footer className="bg-[#0B192C] text-slate-400 pt-16 pb-8 border-t border-slate-800 relative overflow-hidden">
+    <footer className="bg-[#0B192C] text-slate-400 pt-16 pb-16 sm:pb-8 border-t border-slate-800 relative overflow-hidden">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(182,146,91,0.02),transparent)]" />
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">

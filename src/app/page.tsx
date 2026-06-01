@@ -17,7 +17,6 @@ import { FAQSection } from "@/components/FAQSection";
 import { LeadForm } from "@/components/LeadForm";
 import { ContactSection } from "@/components/ContactSection";
 import { Footer } from "@/components/Footer";
-import { MobileStickyCTA } from "@/components/MobileStickyCTA";
 
 // Import Loading Skeletons
 import {
@@ -104,7 +103,6 @@ export default function Home() {
               <FAQSection />
               <LeadForm />
               <ContactSection />
-              <MobileStickyCTA />
             </motion.div>
           )}
         </AnimatePresence>
