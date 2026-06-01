@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Menu, X, ArrowUpRight, CreditCard, Calendar } from "lucide-react";
+import { Menu, X, ArrowUpRight, CreditCard, Calendar, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { NAV_LINKS } from "@/constants";
@@ -17,6 +17,8 @@ export function Navbar() {
   const [isOpen, setIsOpen] = React.useState(false);
   const [scrolled, setScrolled] = React.useState(false);
   const [activeSection, setActiveSection] = React.useState("home");
+  const [isMoreOpen, setIsMoreOpen] = React.useState(false);
+  const moreDropdownRef = React.useRef<HTMLDivElement>(null);
 
   const isJobPage = pathname?.startsWith("/jobs");
   const currentActiveSection = isJobPage ? "jobs-abroad" : activeSection;
@@ -60,6 +62,17 @@ export function Navbar() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [isJobPage]);
+
+  // Close More dropdown on click outside
+  React.useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (moreDropdownRef.current && !moreDropdownRef.current.contains(event.target as Node)) {
+        setIsMoreOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   // Smooth scroll handler
   const handleScrollTo = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
@@ -121,10 +134,10 @@ export function Navbar() {
   return (
     <>
       <header
-        className="fixed top-0 left-0 right-0 z-50 w-full bg-[#0B192C] border-b border-[#B8945E]/20 py-4 shadow-sm"
+        className="fixed top-0 left-0 right-0 z-50 w-full bg-[#0B192C] border-b border-[#B8945E]/20 py-4 shadow-sm overflow-x-hidden"
       >
-        <div className="max-w-screen-2xl mx-auto px-4 sm:px-8 xl:px-10">
-          <div className="flex items-center justify-between gap-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between gap-3 lg:gap-4 2xl:gap-6 min-w-0">
             {/* Logo Group */}
             <div className="flex items-center shrink-0">
               <a
@@ -132,17 +145,17 @@ export function Navbar() {
                 onClick={(e) => handleScrollTo(e, "/#home")}
                 className="flex items-center gap-3 group focus:outline-none"
               >
-                <div className="relative h-12 w-12 sm:h-14 sm:w-14 md:h-20 md:w-20 group-hover:scale-105 transition-transform flex items-center justify-center shrink-0">
+                <div className="relative h-10 w-10 sm:h-12 sm:w-12 lg:h-12 lg:w-12 2xl:h-16 2xl:w-16 group-hover:scale-105 transition-transform flex items-center justify-center shrink-0">
                   <Image
                     src="/images/Untitled design (2).png"
                     alt="Trendy Fortune Overseas logo"
                     fill
-                    sizes="(max-width: 768px) 48px, 80px"
+                    sizes="(max-width: 768px) 40px, 64px"
                     className="object-contain"
                     priority
                   />
                 </div>
-                <div className="hidden xl:flex flex-col items-center select-none">
+                <div className="hidden 2xl:flex flex-col items-center select-none">
                   <span className="font-serif font-extrabold text-base md:text-xl text-[#B8945E] uppercase tracking-wide leading-none" style={{ fontFamily: "'Times New Roman', Times, serif" }}>
                     TRENDY FORTUNE
                   </span>
@@ -154,7 +167,7 @@ export function Navbar() {
             </div>
 
             {/* Desktop Navigation Links */}
-            <nav className="hidden lg:flex items-center gap-4 xl:gap-6 whitespace-nowrap">
+            <nav className="hidden lg:flex items-center gap-1.5 xl:gap-2.5 2xl:gap-5 whitespace-nowrap min-w-0">
               {NAV_LINKS.map((link) => {
                 const hashIndex = link.href.indexOf("#");
                 const id = hashIndex !== -1 ? link.href.substring(hashIndex + 1) : link.href;
@@ -166,7 +179,7 @@ export function Navbar() {
                     href={link.href}
                     onClick={(e) => handleScrollTo(e, link.href)}
                     className={cn(
-                      "text-sm xl:text-base font-medium transition-colors hover:text-[#B8945E] relative py-2 focus:outline-none whitespace-nowrap",
+                      "text-[13px] xl:text-sm 2xl:text-base font-medium transition-colors hover:text-[#B8945E] relative py-2 focus:outline-none whitespace-nowrap",
                       isActive ? "text-[#B8945E] font-semibold" : "text-white/85"
                     )}
                   >
@@ -184,8 +197,56 @@ export function Navbar() {
             </nav>
 
             {/* Desktop Actions (Language Switcher + Complete Payment + Apply Now) */}
-            <div className="hidden lg:flex items-center gap-3 xl:gap-4 shrink-0 whitespace-nowrap">
-              <div className="hidden xl:block">
+            <div className="hidden lg:flex items-center gap-2 xl:gap-2.5 2xl:gap-3.5 shrink-0 whitespace-nowrap">
+              {/* More Dropdown (visible strictly between 1024px and 1439px) */}
+              <div className="hidden lg:block 2xl:hidden relative" ref={moreDropdownRef}>
+                <button
+                  onClick={() => setIsMoreOpen(!isMoreOpen)}
+                  type="button"
+                  className="inline-flex items-center justify-center gap-2 h-11 px-4 rounded-xl border border-white/20 hover:border-white/40 bg-white/5 hover:bg-white/10 text-white font-semibold hover:shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#B8945E] transition-all cursor-pointer whitespace-nowrap text-sm"
+                  aria-haspopup="true"
+                  aria-expanded={isMoreOpen}
+                  aria-label="More navigation links"
+                >
+                  <span>{t("more") || "More"}</span>
+                  <ChevronDown className={cn("h-4 w-4 text-slate-400 transition-transform duration-200", isMoreOpen ? "transform rotate-180" : "")} />
+                </button>
+
+                {isMoreOpen && (
+                  <div className="absolute right-0 mt-2 w-64 rounded-xl bg-white shadow-xl border border-slate-100 ring-1 ring-black/5 z-50 p-3 space-y-3 transform origin-top-right transition-all duration-200">
+                    <div className="bg-slate-50 px-3 py-1.5 rounded-lg text-[10px] font-bold text-slate-400 uppercase tracking-wider font-sans">
+                      More Actions
+                    </div>
+                    
+                    {/* Language Switcher Nested */}
+                    <div className="w-full">
+                      <LanguageSwitcher isDropdown={true} />
+                    </div>
+
+                    {/* Book Appointment Nested */}
+                    <a
+                      href="/appointment"
+                      onClick={() => setIsMoreOpen(false)}
+                      className="w-full flex items-center gap-2.5 px-4 py-3 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-50 border border-slate-100 transition-all duration-200 whitespace-nowrap"
+                    >
+                      <Calendar className="h-4 w-4 text-[#B8945E] shrink-0" />
+                      <span className="truncate">{t("bookAppointment") || "Book Appointment"}</span>
+                    </a>
+
+                    {/* Complete Payment Nested */}
+                    <a
+                      href="/pay"
+                      onClick={() => setIsMoreOpen(false)}
+                      className="w-full flex items-center gap-2.5 px-4 py-3 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-50 border border-slate-100 transition-all duration-200 whitespace-nowrap"
+                    >
+                      <CreditCard className="h-4 w-4 text-[#B8945E] shrink-0" />
+                      <span className="truncate">{t("completePayment") || "Complete Payment"}</span>
+                    </a>
+                  </div>
+                )}
+              </div>
+
+              <div className="hidden 2xl:block">
                 <LanguageSwitcher />
               </div>
               <a
@@ -205,7 +266,7 @@ export function Navbar() {
               <Button
                 onClick={handleApplyClick}
                 variant="primary"
-                className="gap-2 group px-5 py-2.5 whitespace-nowrap bg-[#B8945E] text-[#071426] hover:bg-[#A37F48] hover:shadow-[0_0_15px_rgba(184,148,94,0.35)] hover:-translate-y-0.5 transition-all duration-300 border border-white/10 font-bold"
+                className="gap-1.5 group px-3.5 py-2 2xl:gap-2 2xl:px-5 2xl:py-2.5 whitespace-nowrap bg-[#B8945E] text-[#071426] hover:bg-[#A37F48] hover:shadow-[0_0_15px_rgba(184,148,94,0.35)] hover:-translate-y-0.5 transition-all duration-300 border border-white/10 font-bold text-sm 2xl:text-base"
               >
                 {t("applyNow")}
                 <ArrowUpRight className="h-4 w-4 text-[#071426] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
@@ -213,8 +274,8 @@ export function Navbar() {
             </div>
 
             {/* Mobile Actions Container (Language Switcher outside Hamburger + Hamburger Toggle) */}
-            <div className="flex 2xl:hidden items-center gap-1.5 xs:gap-2.5 shrink-0">
-              <div className="xl:hidden">
+            <div className="flex lg:hidden items-center gap-1.5 xs:gap-2.5 shrink-0">
+              <div>
                 <LanguageSwitcher isMobileHeader={true} />
               </div>
               <button
@@ -238,7 +299,7 @@ export function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-x-0 top-[76px] z-30 2xl:hidden border-b border-slate-100 bg-white/95 backdrop-blur-lg shadow-xl"
+            className="fixed inset-x-0 top-[76px] z-30 lg:hidden border-b border-slate-100 bg-white/95 backdrop-blur-lg shadow-xl"
           >
             <div className="px-4 pt-4 pb-8 space-y-6">
               <nav className="flex flex-col gap-4">

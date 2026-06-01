@@ -23,10 +23,12 @@ const languageLabels = {
 
 export function LanguageSwitcher({
   isMobile = false,
-  isMobileHeader = false
+  isMobileHeader = false,
+  isDropdown = false
 }: {
   isMobile?: boolean;
   isMobileHeader?: boolean;
+  isDropdown?: boolean;
 }) {
   const { locale, setLocale, sessionLocale } = useLanguage();
   const [isOpen, setIsOpen] = React.useState(false);
@@ -91,7 +93,10 @@ export function LanguageSwitcher({
         onClick={() => setIsOpen(!isOpen)}
         type="button"
         className={cn(
-          "inline-flex items-center justify-center gap-1 sm:gap-2 rounded-xl border border-[#B8945E]/30 bg-white/5 text-white font-semibold hover:bg-white/10 hover:border-[#B8945E]/50 hover:shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#B8945E] transition-all cursor-pointer shrink-0 whitespace-nowrap",
+          "inline-flex items-center justify-center gap-1 sm:gap-2 rounded-xl font-semibold hover:shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#B8945E] transition-all cursor-pointer shrink-0 whitespace-nowrap",
+          isDropdown
+            ? "border border-slate-200 bg-slate-50 text-slate-800 hover:bg-slate-100 hover:border-slate-300 w-full justify-between"
+            : "border border-[#B8945E]/30 bg-white/5 text-white hover:bg-white/10 hover:border-[#B8945E]/50",
           isMobileHeader 
             ? "h-9 px-2 text-xs" 
             : "h-11 px-4 text-sm"
