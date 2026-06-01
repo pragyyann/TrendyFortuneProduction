@@ -199,8 +199,8 @@ function PaymentFlow() {
   // Determine payment status badge
   // ----------------------------------------------------------------
   const getPaymentBadge = (status: string | undefined) => {
-    const s = status ? status.toLowerCase() : "pending";
-    if (s === "paid") {
+    const s = status ? status.trim().toLowerCase() : "pending";
+    if (s === "paid" || s === "success" || s === "completed") {
       return (
         <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
           <CheckCircle2 className="h-3.5 w-3.5" />
@@ -208,10 +208,18 @@ function PaymentFlow() {
         </span>
       );
     }
-    if (s === "not required" || s === "not_required") {
+    if (s === "failed") {
       return (
-        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-600 border border-slate-200">
-          Not Required
+        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-rose-50 text-rose-700 border border-rose-200">
+          <AlertTriangle className="h-3.5 w-3.5" />
+          Failed
+        </span>
+      );
+    }
+    if (s === "processing") {
+      return (
+        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200">
+          Processing
         </span>
       );
     }
@@ -242,7 +250,7 @@ function PaymentFlow() {
             Complete Your Payment
           </h1>
           <p className="text-sm text-slate-500 leading-relaxed max-w-md mx-auto">
-            Enter your Application ID to view your details and complete your secure token payment.
+            Enter your Application ID to view your details and complete your secure payment.
           </p>
         </div>
 
@@ -415,10 +423,11 @@ function PaymentFlow() {
   const renderNextStepsPanel = () => {
     if (!applicationData) return null;
 
-    const s = applicationData.payment_status ? applicationData.payment_status.toLowerCase() : "pending";
-    const isPending = s === "pending" || s === "";
-    const isPaidStatus = s === "paid";
-    const isNotRequired = s === "not required" || s === "not_required";
+    const s = applicationData.payment_status ? applicationData.payment_status.trim().toLowerCase() : "pending";
+    const isPaidStatus = s === "paid" || s === "success" || s === "completed";
+    const isFailedStatus = s === "failed";
+    const isProcessingStatus = s === "processing";
+    const isPending = !isPaidStatus && !isFailedStatus && !isProcessingStatus;
 
     return (
       <div className="bg-white rounded-3xl border border-slate-100 shadow-xl shadow-slate-900/5 p-6 sm:p-8 space-y-6">
@@ -441,27 +450,44 @@ function PaymentFlow() {
                 <div className="w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center text-xs font-bold text-[#0B192C] shrink-0 mt-0.5">
                   2
                 </div>
-                <p className="text-sm text-slate-600">
-                  <strong>Continue token payment:</strong> Click the button below to initiate your secure token payment.
-                </p>
+                {applicationData.payment_amount ? (
+                  <p className="text-sm text-slate-600">
+                    <strong>Continue payment:</strong> Your payment is pending. Please continue when you are ready.
+                  </p>
+                ) : (
+                  <p className="text-sm text-slate-600">
+                    <strong>Continue payment:</strong> Payment amount will be confirmed by our team.
+                  </p>
+                )}
               </div>
               <div className="flex gap-3">
                 <div className="w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center text-xs font-bold text-[#0B192C] shrink-0 mt-0.5">
                   3
                 </div>
                 <p className="text-sm text-slate-600">
-                  <strong>Team verification:</strong> Our immigration specialists will verify your slip and contact you soon.
+                  <strong>Team verification:</strong> Our immigration specialists will verify your secure payment and contact you soon.
                 </p>
               </div>
             </div>
           )}
 
-          {isNotRequired && (
+          {isFailedStatus && (
             <div className="space-y-3">
-              <div className="flex gap-3 items-start bg-slate-50 rounded-2xl p-4 border border-slate-100">
-                <ShieldCheck className="h-5 w-5 text-slate-400 shrink-0 mt-0.5" />
-                <p className="text-sm text-slate-600">
-                  No online payment is required for this application right now. You can contact our team for the next step.
+              <div className="flex gap-3 items-start bg-red-50 rounded-2xl p-4 border border-red-100">
+                <AlertTriangle className="h-5 w-5 text-red-600 shrink-0 mt-0.5" />
+                <p className="text-sm text-red-800">
+                  Your previous payment attempt failed. Please try again or contact our support team.
+                </p>
+              </div>
+            </div>
+          )}
+
+          {isProcessingStatus && (
+            <div className="space-y-3">
+              <div className="flex gap-3 items-start bg-blue-50 rounded-2xl p-4 border border-blue-100">
+                <Clock className="h-5 w-5 text-blue-600 shrink-0 mt-0.5" />
+                <p className="text-sm text-blue-800">
+                  Your payment is currently being processed. Please wait a moment while we update your status.
                 </p>
               </div>
             </div>
@@ -489,18 +515,8 @@ function PaymentFlow() {
               isLoading={isPaying}
             >
               <CreditCard className="h-5 w-5" />
-              Confirm & Pay Token Money
+              Confirm & Pay
             </Button>
-          )}
-
-          {isNotRequired && (
-            <button
-              type="button"
-              disabled
-              className="w-full flex items-center justify-center gap-2 h-12 bg-slate-100 text-slate-400 border border-slate-200 rounded-xl font-bold text-sm cursor-not-allowed select-none"
-            >
-              Payment Not Required
-            </button>
           )}
 
           {isPaidStatus && (
@@ -569,7 +585,7 @@ function PaymentFlow() {
             Payment Gateway Pending
           </h2>
           <p className="text-sm text-slate-500 leading-relaxed">
-            Our online payment gateway is currently under maintenance. You can complete your secure token payment directly with our team on WhatsApp.
+            Our online payment gateway is currently under maintenance. You can complete your secure payment directly with our team on WhatsApp.
           </p>
         </div>
 

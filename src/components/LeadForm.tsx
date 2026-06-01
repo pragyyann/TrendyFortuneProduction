@@ -110,7 +110,7 @@ export function LeadForm() {
       if (res.ok && result.success !== false) {
         toast({
           title: "Inquiry Submitted!",
-          description: "Employer inquiry submitted successfully. Our team will contact you soon.",
+          description: "Your manpower inquiry has been received successfully. A confirmation email has been sent if an email address was provided. Our team will contact you shortly.",
           type: "success"
         });
         employerForm.reset();

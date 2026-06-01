@@ -249,7 +249,7 @@ export function JobSeekerForm({
       });
 
       if (applicationId) {
-        router.push(`?success=true&ref=${encodeURIComponent(applicationId)}`);
+        router.push(`?success=true&ref=${encodeURIComponent(applicationId)}`, { scroll: false });
       }
 
       seekerForm.reset();
@@ -386,7 +386,7 @@ export function JobSeekerForm({
             )}
           </button>
 
-          {/* Pay Token Money (Direct Order Creation Flow) */}
+          {/* Pay (Direct Order Creation Flow) */}
           {!immediatePaymentError && (
             <Button
               type="button"
@@ -397,7 +397,7 @@ export function JobSeekerForm({
               className="w-full justify-center gap-2 h-12 text-sm font-bold cursor-pointer shadow-lg shadow-[#B8945E]/20"
             >
               <CreditCard className="h-5 w-5" />
-              Pay Token Money
+              Pay
             </Button>
           )}
 
