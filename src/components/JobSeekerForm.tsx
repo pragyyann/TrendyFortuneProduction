@@ -628,7 +628,7 @@ export function JobSeekerForm({
 
       {/* 8. Upload CV (Optional) */}
       <div className="space-y-2 font-sans">
-        <label className="text-sm font-semibold text-slate-700 block">
+        <label htmlFor="seeker-cv-upload" className="text-sm font-semibold text-slate-700 block cursor-pointer">
           Upload CV <span className="text-xs font-normal text-slate-400">(optional)</span>
         </label>
         {seekerCvName ? (
@@ -657,6 +657,7 @@ export function JobSeekerForm({
         ) : (
           <div className="border-2 border-dashed border-slate-200 hover:border-[#B6925B] transition-colors rounded-2xl p-6 flex flex-col items-center justify-center bg-slate-50 relative group">
             <input
+              id="seeker-cv-upload"
               ref={fileInputRef}
               type="file"
               accept=".pdf,.doc,.docx"

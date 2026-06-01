@@ -323,11 +323,10 @@ function AppointmentBookingFlow() {
     return `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
   };
 
-  // Rendering a slot section helper
   const renderSlotGroup = (title: string, slots: string[]) => {
     return (
       <div className="space-y-3 pt-2">
-        <h4 className="text-xs font-semibold uppercase tracking-wide text-slate-400 font-sans">{title}</h4>
+        <h3 className="text-xs font-semibold uppercase tracking-wide text-slate-400 font-sans">{title}</h3>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
           {slots.map((slot) => {
             const disabled = isSlotDisabled(slot);
@@ -628,9 +627,9 @@ function AppointmentBookingFlow() {
 
           {/* Time Slots Area (Morning / Afternoon / Evening) */}
           <div className="space-y-4 md:col-span-2">
-            <label className="text-sm font-semibold text-slate-700 flex items-center gap-1.5">
+            <h3 className="text-sm font-semibold text-slate-700 flex items-center gap-1.5">
               {t("prefTime")} <span className="text-red-500">*</span>
-            </label>
+            </h3>
             
             {appointmentForm.formState.errors.appointmentTime && (
               <p className="text-xs text-red-500 font-semibold">{appointmentForm.formState.errors.appointmentTime.message}</p>

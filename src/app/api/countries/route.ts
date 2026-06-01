@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 300;
 
 export async function GET() {
   try {
@@ -19,7 +19,7 @@ export async function GET() {
     const finalUrl = `${scriptUrl}?action=countries`;
 
     const response = await fetch(finalUrl, {
-      cache: "no-store",
+      next: { revalidate: 300 },
     });
 
     const text = await response.text();
@@ -54,7 +54,7 @@ export async function GET() {
     return NextResponse.json(data, {
       status: 200,
       headers: {
-        "Cache-Control": "no-store",
+        "Cache-Control": "public, s-maxage=300, stale-while-revalidate=600",
       },
     });
   } catch (error) {

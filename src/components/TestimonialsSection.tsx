@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { Play, Quote, ArrowUpRight } from "lucide-react";
 import { TESTIMONIALS, testimonialVideoUrl } from "@/data/testimonials";
 import { useTranslations } from "next-intl";
@@ -21,7 +20,7 @@ export function TestimonialsSection() {
         
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-14 space-y-4">
-          <div className="text-xs font-bold text-[#B8945E] tracking-widest uppercase">
+          <div className="text-xs font-bold text-[#926F34] tracking-widest uppercase">
             {t("sectionLabel")}
           </div>
           <h2 className="text-3xl md:text-4xl font-display font-extrabold text-[#071426]">
@@ -106,9 +105,9 @@ export function TestimonialsSection() {
               {/* Candidate Info with Subtle Gold Line Accent */}
               <div className="pt-4 border-t border-slate-50 flex items-center justify-between">
                 <div>
-                  <h4 className="font-display font-extrabold text-sm text-[#071426]">
+                  <h3 className="font-display font-extrabold text-sm text-[#071426]">
                     {t(item.nameKey)}
-                  </h4>
+                  </h3>
                   <p className="text-xs text-slate-400 font-sans mt-0.5">
                     {t(item.roleKey)}
                   </p>

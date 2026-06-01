@@ -52,9 +52,18 @@ export function InteractiveWorldMap() {
         setLoading(false);
       }
     }
-    loadData();
+    
+    const delayTimer = setTimeout(() => {
+      if (typeof window !== "undefined" && "requestIdleCallback" in window) {
+        window.requestIdleCallback(() => loadData());
+      } else {
+        loadData();
+      }
+    }, 300);
+
     return () => {
       active = false;
+      clearTimeout(delayTimer);
     };
   }, []);
 

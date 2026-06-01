@@ -1,7 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { ShieldCheck, Users, FileCheck, Compass, HeartHandshake } from "lucide-react";
+import { ShieldCheck, Users, FileCheck, HeartHandshake } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 export function TrustStrip() {
@@ -38,13 +37,9 @@ export function TrustStrip() {
           {trustItems.map((item, idx) => {
             const Icon = item.icon;
             return (
-              <motion.div
+              <div
                 key={idx}
-                initial={{ opacity: 0, y: 15 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.5, delay: idx * 0.1 }}
-                className="flex flex-col items-center justify-center p-4 md:p-6"
+                className="flex flex-col items-center justify-center p-4 md:p-6 transition-all duration-300"
               >
                 <div className="bg-[#1E3E62] text-[#B6925B] p-3 rounded-2xl mb-4 shadow-inner">
                   <Icon className="h-6 w-6" />
@@ -55,7 +50,7 @@ export function TrustStrip() {
                 <p className="text-xs text-slate-400 mt-1 max-w-[170px] mx-auto leading-normal">
                   {item.description}
                 </p>
-              </motion.div>
+              </div>
             );
           })}
         </div>
@@ -63,4 +58,3 @@ export function TrustStrip() {
     </section>
   );
 }
-

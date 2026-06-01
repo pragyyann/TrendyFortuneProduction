@@ -215,7 +215,7 @@ export function Navbar() {
               <LanguageSwitcher isMobileHeader={true} />
               <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="p-1.5 rounded-xl text-white hover:bg-white/10 focus:outline-none cursor-pointer shrink-0 transition-colors"
+                className="p-2.5 rounded-xl text-white hover:bg-white/10 focus:outline-none cursor-pointer shrink-0 transition-colors"
                 aria-expanded={isOpen}
                 aria-label="Toggle navigation menu"
               >
@@ -251,7 +251,7 @@ export function Navbar() {
                       className={cn(
                         "text-lg font-medium px-4 py-2.5 rounded-xl transition-colors",
                         isActive
-                          ? "bg-slate-50 text-[#B6925B] font-semibold"
+                          ? "bg-slate-50 text-[#926F34] font-semibold"
                           : "text-slate-600 hover:bg-slate-50 hover:text-[#0B192C]"
                       )}
                     >

@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { HardHat, Hotel, HeartPulse, Factory, Truck, ShieldAlert, Flame, ShoppingBag } from "lucide-react";
 import { INDUSTRIES } from "@/constants";
 import { useTranslations } from "next-intl";
@@ -25,7 +24,7 @@ export function IndustrySection() {
         
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-          <div className="text-xs font-bold text-[#B6925B] tracking-widest uppercase">
+          <div className="text-xs font-bold text-[#926F34] tracking-widest uppercase">
             {t("badge")}
           </div>
           <h2 className="text-3xl md:text-4xl font-display font-extrabold text-[#0B192C]">
@@ -42,12 +41,8 @@ export function IndustrySection() {
             const Icon = ICON_MAP[industry.iconName] || HardHat;
             const translationKey = industry.id === "oil-gas" ? "oilGas" : industry.id;
             return (
-              <motion.div
+              <div
                 key={industry.id}
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.4, delay: idx * 0.05 }}
                 className="group flex flex-col items-center p-6 rounded-2xl border border-slate-100 bg-[#f8fafc]/30 hover:bg-[#0B192C] hover:text-white transition-all duration-300 text-center cursor-pointer shadow-sm hover:shadow-xl"
               >
                 {/* Circle Icon */}
@@ -59,7 +54,7 @@ export function IndustrySection() {
                 <h3 className="font-display font-bold text-base md:text-lg text-[#0B192C] group-hover:text-white transition-colors">
                   {t(`items.${translationKey}`)}
                 </h3>
-              </motion.div>
+              </div>
             );
           })}
         </div>

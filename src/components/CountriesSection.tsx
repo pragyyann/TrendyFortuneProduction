@@ -20,9 +20,18 @@ export function CountriesSection() {
         setLoading(false);
       }
     }
-    loadData();
+    
+    const delayTimer = setTimeout(() => {
+      if (typeof window !== "undefined" && "requestIdleCallback" in window) {
+        window.requestIdleCallback(() => loadData());
+      } else {
+        loadData();
+      }
+    }, 400);
+
     return () => {
       active = false;
+      clearTimeout(delayTimer);
     };
   }, []);
 
@@ -39,7 +48,7 @@ export function CountriesSection() {
         {/* Section Header */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
           <div className="text-center max-w-3xl mx-auto space-y-4">
-            <div className="text-xs font-bold text-[#B6925B] tracking-widest uppercase">
+            <div className="text-xs font-bold text-[#926F34] tracking-widest uppercase">
               {t("tag")}
             </div>
             <h2 className="text-3xl md:text-4xl font-display font-extrabold text-[#0B192C]">
@@ -82,7 +91,7 @@ export function CountriesSection() {
       {/* Section Header */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
         <div className="text-center max-w-3xl mx-auto space-y-4">
-          <div className="text-xs font-bold text-[#B6925B] tracking-widest uppercase">
+          <div className="text-xs font-bold text-[#926F34] tracking-widest uppercase">
             {t("tag")}
           </div>
           <h2 className="text-3xl md:text-4xl font-display font-extrabold text-[#0B192C]">
@@ -129,6 +138,7 @@ export function CountriesSection() {
                 {/* View Jobs Button */}
                 <a
                   href={`/jobs/${country.country_slug}`}
+                  aria-label={`${t("viewJobs") || "View Jobs"} for ${country.country_name}`}
                   className="w-full h-8 min-h-[32px] sm:h-11 sm:min-h-[44px] flex items-center justify-center gap-1 sm:gap-2 rounded-lg sm:rounded-xl bg-[#0B192C] text-white hover:bg-[#B6925B] font-bold text-[10px] sm:text-sm transition-all duration-300 active:scale-[0.98] shadow-sm sm:shadow-md hover:shadow-lg cursor-pointer"
                 >
                   <span>{t("viewJobs")}</span>

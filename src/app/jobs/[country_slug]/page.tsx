@@ -429,6 +429,7 @@ export default function CountryJobsPage() {
                           {/* View More Details Button */}
                           <button
                             onClick={() => setSelectedJob(normalizedJob)}
+                            aria-label={`${tJobs("buttons.viewMore") || "View More"} for ${role}`}
                             className="flex-1 sm:flex-none text-center px-5 py-2.5 rounded-xl border border-slate-200 hover:border-[#B6925B] bg-white hover:bg-slate-50 text-slate-700 hover:text-[#B6925B] font-bold text-xs md:text-sm transition-all duration-300 active:scale-98 cursor-pointer whitespace-nowrap font-sans"
                           >
                             {tJobs("buttons.viewMore") || "View More"}
@@ -441,6 +442,7 @@ export default function CountryJobsPage() {
                             </span>
                             <button 
                               onClick={() => setApplyJob(normalizedJob)}
+                              aria-label={`${tJobs("buttons.applyNow")} for ${role}`}
                               className="w-full flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl bg-[#B6925B] text-[#0B192C] hover:bg-[#0B192C] hover:text-[#B6925B] border border-[#B6925B] font-extrabold text-xs md:text-sm transition-all duration-300 shadow-md hover:shadow-lg active:scale-98 cursor-pointer whitespace-nowrap animate-gold-glow font-sans"
                             >
                               <span>{tJobs("buttons.applyNow")}</span>
@@ -453,6 +455,7 @@ export default function CountryJobsPage() {
                             href={getJobWhatsAppUrl(role)}
                             target="_blank"
                             rel="noopener noreferrer"
+                            aria-label={`Inquire about ${role} on WhatsApp`}
                             className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-xl border border-emerald-200 hover:border-emerald-500 bg-emerald-50 hover:bg-emerald-100/50 text-emerald-600 font-bold text-xs md:text-sm transition-all duration-300 active:scale-98 cursor-pointer"
                           >
                             <MessageCircle className="h-4.5 w-4.5 shrink-0 fill-current" />
@@ -561,7 +564,7 @@ export default function CountryJobsPage() {
               {/* Full Description */}
               {selectedJob.job_description && (
                 <div className="space-y-2">
-                  <h4 className="text-sm font-bold uppercase tracking-wider text-slate-400 font-sans">Job Description</h4>
+                  <h3 className="text-sm font-bold uppercase tracking-wider text-slate-400 font-sans">Job Description</h3>
                   <p className="text-slate-600 text-sm md:text-base leading-relaxed whitespace-pre-line font-sans">
                     {selectedJob.job_description}
                   </p>
@@ -571,7 +574,7 @@ export default function CountryJobsPage() {
               {/* Requirements */}
               {selectedJob.requirements && parseBulletPoints(selectedJob.requirements).length > 0 && (
                 <div className="space-y-2 pt-2 border-t border-slate-50">
-                  <h4 className="text-sm font-bold uppercase tracking-wider text-slate-400 font-sans">Requirements</h4>
+                  <h3 className="text-sm font-bold uppercase tracking-wider text-slate-400 font-sans">Requirements</h3>
                   <ul className="space-y-2.5 font-sans">
                     {parseBulletPoints(selectedJob.requirements).map((req, i) => (
                       <li key={i} className="flex items-start gap-2 text-slate-600 text-sm md:text-base leading-relaxed">
@@ -586,7 +589,7 @@ export default function CountryJobsPage() {
               {/* Benefits */}
               {selectedJob.benefits && parseBulletPoints(selectedJob.benefits).length > 0 && (
                 <div className="space-y-2 pt-2 border-t border-slate-50">
-                  <h4 className="text-sm font-bold uppercase tracking-wider text-slate-400 font-sans">Benefits</h4>
+                  <h3 className="text-sm font-bold uppercase tracking-wider text-slate-400 font-sans">Benefits</h3>
                   <ul className="space-y-2.5 font-sans">
                     {parseBulletPoints(selectedJob.benefits).map((benefit, i) => (
                       <li key={i} className="flex items-start gap-2 text-slate-600 text-sm md:text-base leading-relaxed">

@@ -1,31 +1,10 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { ArrowRight, Briefcase, Building2 } from "lucide-react";
-import { Button } from "./ui/button";
 import { useTranslations } from "next-intl";
 
 export function SplitCTA() {
   const t = useTranslations("split");
-
-  const scrollToForm = (formType: "seeker" | "employer") => {
-    const targetId = formType === "seeker" ? "job-seeker" : "employer";
-    const element = document.getElementById(targetId);
-    if (element) {
-      const offset = 80;
-      const bodyRect = document.body.getBoundingClientRect().top;
-      const elementRect = element.getBoundingClientRect().top;
-      const elementPosition = elementRect - bodyRect;
-      const offsetPosition = elementPosition - offset;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: "smooth"
-      });
-
-      window.location.hash = `#${targetId}`;
-    }
-  };
 
   return (
     <section id="about" className="py-20 bg-white relative">
@@ -33,11 +12,7 @@ export function SplitCTA() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
           
           {/* For Job Seekers (Dark Premium Card) */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.6 }}
+          <div
             className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#0B192C] via-[#122237] to-[#1E3E62] p-8 md:p-12 text-white shadow-xl flex flex-col justify-between"
           >
             {/* Background vector */}
@@ -56,23 +31,18 @@ export function SplitCTA() {
             </div>
 
             <div className="pt-8">
-              <Button
-                onClick={() => scrollToForm("seeker")}
-                variant="accent"
-                className="gap-2 cursor-pointer"
+              <a
+                href="#job-seeker"
+                className="inline-flex items-center gap-2 px-6 py-3.5 bg-[#B6925B] hover:bg-[#926F34] hover:text-white text-[#0B192C] font-extrabold rounded-xl text-sm transition-all duration-300 cursor-pointer shadow-md hover:shadow-lg active:scale-[0.98]"
               >
                 {t("seeker_btn")}
                 <ArrowRight className="h-4 w-4" />
-              </Button>
+              </a>
             </div>
-          </motion.div>
+          </div>
 
           {/* For Employers (Light Clean Card) */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.6 }}
+          <div
             className="relative overflow-hidden rounded-3xl border border-slate-200 bg-[#f8fafc] p-8 md:p-12 shadow-md flex flex-col justify-between"
           >
             <div className="space-y-6">
@@ -88,20 +58,18 @@ export function SplitCTA() {
             </div>
 
             <div className="pt-8">
-              <Button
-                onClick={() => scrollToForm("employer")}
-                variant="primary"
-                className="gap-2 cursor-pointer"
+              <a
+                href="#employer"
+                className="inline-flex items-center gap-2 px-6 py-3.5 bg-[#0B192C] hover:bg-[#122237] text-white font-extrabold rounded-xl text-sm transition-all duration-300 cursor-pointer shadow-md hover:shadow-lg active:scale-[0.98]"
               >
                 {t("employer_btn")}
                 <ArrowRight className="h-4 w-4" />
-              </Button>
+              </a>
             </div>
-          </motion.div>
+          </div>
 
         </div>
       </div>
     </section>
   );
 }
-

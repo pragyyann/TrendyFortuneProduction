@@ -25,7 +25,7 @@ export async function GET(request: NextRequest) {
     }
 
     const response = await fetch(finalUrl, {
-      cache: "no-store",
+      next: { revalidate: 180 },
     });
 
     const text = await response.text();
@@ -60,7 +60,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(data, {
       status: 200,
       headers: {
-        "Cache-Control": "no-store",
+        "Cache-Control": "public, s-maxage=180, stale-while-revalidate=360",
       },
     });
   } catch (error) {

@@ -64,7 +64,7 @@ export function ServicesSection() {
         
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-          <div className="text-xs font-bold text-[#B6925B] tracking-widest uppercase">
+          <div className="text-xs font-bold text-[#926F34] tracking-widest uppercase">
             {t("tag")}
           </div>
           <h2 className="text-3xl md:text-4xl font-display font-extrabold text-[#071426]">

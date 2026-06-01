@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import { Plus, Minus } from "lucide-react";
 import { FAQS } from "@/data/faqs";
 import { useTranslations } from "next-intl";
@@ -24,7 +23,7 @@ export function FAQSection() {
         
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-          <div className="text-xs font-bold text-[#B8945E] tracking-widest uppercase">
+          <div className="text-xs font-bold text-[#926F34] tracking-widest uppercase">
             {t("sectionLabel")}
           </div>
           <h2 className="text-3xl md:text-4xl font-display font-extrabold text-[#071426]">
@@ -71,21 +70,18 @@ export function FAQSection() {
                 </button>
 
                 {/* Collapsible Answer Panel */}
-                <AnimatePresence initial={false}>
-                  {isOpen && (
-                    <motion.div
-                      id={`faq-answer-${item.id}`}
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.25, ease: "easeInOut" }}
-                    >
-                      <div className="px-6 pb-6 pt-1 text-sm md:text-base text-slate-500 leading-relaxed font-sans border-t border-[#B8945E]/10 bg-[#FAFAF7]/50">
-                        {t(item.answerKey)}
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                <div
+                  id={`faq-answer-${item.id}`}
+                  className={`grid transition-all duration-300 ease-in-out ${
+                    isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+                  }`}
+                >
+                  <div className="overflow-hidden">
+                    <div className="px-6 pb-6 pt-1 text-sm md:text-base text-slate-500 leading-relaxed font-sans border-t border-[#B8945E]/10 bg-[#FAFAF7]/50">
+                      {t(item.answerKey)}
+                    </div>
+                  </div>
+                </div>
               </div>
             );
           })}

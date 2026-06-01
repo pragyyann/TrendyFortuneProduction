@@ -6,7 +6,15 @@ import { Button } from "./ui/button";
 import { useTranslations } from "next-intl";
 import { useLanguage } from "@/context/LanguageContext";
 import { getWhatsAppLink } from "./MobileStickyCTA";
-import { InteractiveWorldMap } from "./InteractiveWorldMap";
+import dynamic from "next/dynamic";
+
+const InteractiveWorldMap = dynamic(
+  () => import("./InteractiveWorldMap").then((mod) => mod.InteractiveWorldMap),
+  {
+    ssr: false,
+    loading: () => <div className="w-full h-full min-h-[300px] bg-slate-50/50 animate-pulse rounded-3xl border border-slate-100/50" />
+  }
+);
 
 export function Hero() {
   const t = useTranslations("hero");

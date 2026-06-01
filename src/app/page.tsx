@@ -1,111 +1,120 @@
-"use client";
-
 import * as React from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import dynamic from "next/dynamic";
 
-// Import Main Components
+// Import Above-the-fold/Immediate Components
 import { Navbar } from "@/components/Navbar";
 import { Hero } from "@/components/Hero";
-import { TrustStrip } from "@/components/TrustStrip";
-import { CountriesSection } from "@/components/CountriesSection";
-import { ServicesSection } from "@/components/ServicesSection";
-import { IndustrySection } from "@/components/IndustrySection";
-import { HowItWorks } from "@/components/HowItWorks";
-import { SplitCTA } from "@/components/SplitCTA";
-import { TestimonialsSection } from "@/components/TestimonialsSection";
-import { FAQSection } from "@/components/FAQSection";
-import { LeadForm } from "@/components/LeadForm";
-import { ContactSection } from "@/components/ContactSection";
-import { Footer } from "@/components/Footer";
 
-// Import Loading Skeletons
+// Import Skeletons for Loading Fallbacks
 import {
-  HeroSkeleton,
   CountryCardsSkeleton,
   ServicesSkeleton,
   CardGridSkeleton,
   FormSkeleton
 } from "@/components/ui/skeletons";
 
+// Dynamically load all below-the-fold components for code-splitting
+const TrustStrip = dynamic(
+  () => import("@/components/TrustStrip").then((mod) => mod.TrustStrip)
+);
+
+const CountriesSection = dynamic(
+  () => import("@/components/CountriesSection").then((mod) => mod.CountriesSection),
+  {
+    loading: () => (
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 space-y-12">
+        <div className="text-center space-y-4">
+          <div className="h-4 w-32 bg-slate-200 rounded mx-auto animate-pulse" />
+          <div className="h-8 w-64 bg-slate-200 rounded mx-auto animate-pulse" />
+        </div>
+        <CountryCardsSkeleton />
+      </div>
+    )
+  }
+);
+
+const ServicesSection = dynamic(
+  () => import("@/components/ServicesSection").then((mod) => mod.ServicesSection),
+  {
+    loading: () => (
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 space-y-12">
+        <div className="text-center space-y-4">
+          <div className="h-4 w-32 bg-slate-200 rounded mx-auto animate-pulse" />
+          <div className="h-8 w-64 bg-slate-200 rounded mx-auto animate-pulse" />
+        </div>
+        <ServicesSkeleton />
+      </div>
+    )
+  }
+);
+
+const IndustrySection = dynamic(
+  () => import("@/components/IndustrySection").then((mod) => mod.IndustrySection),
+  {
+    loading: () => (
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 space-y-12">
+        <div className="text-center space-y-4">
+          <div className="h-4 w-32 bg-slate-200 rounded mx-auto animate-pulse" />
+          <div className="h-8 w-64 bg-slate-200 rounded mx-auto animate-pulse" />
+        </div>
+        <CardGridSkeleton />
+      </div>
+    )
+  }
+);
+
+const HowItWorks = dynamic(
+  () => import("@/components/HowItWorks").then((mod) => mod.HowItWorks)
+);
+
+const SplitCTA = dynamic(
+  () => import("@/components/SplitCTA").then((mod) => mod.SplitCTA)
+);
+
+const TestimonialsSection = dynamic(
+  () => import("@/components/TestimonialsSection").then((mod) => mod.TestimonialsSection)
+);
+
+const FAQSection = dynamic(
+  () => import("@/components/FAQSection").then((mod) => mod.FAQSection)
+);
+
+const LeadForm = dynamic(
+  () => import("@/components/LeadForm").then((mod) => mod.LeadForm),
+  {
+    loading: () => (
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        <FormSkeleton />
+      </div>
+    )
+  }
+);
+
+const ContactSection = dynamic(
+  () => import("@/components/ContactSection").then((mod) => mod.ContactSection)
+);
+
+const Footer = dynamic(
+  () => import("@/components/Footer").then((mod) => mod.Footer)
+);
+
 export default function Home() {
-  const [isLoading, setIsLoading] = React.useState(true);
-
-  // Simulate dynamic API data mounting delay to elegantly showcase premium skeleton overlays
-  React.useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1200); // 1.2 second simulated fetch latency
-    return () => clearTimeout(timer);
-  }, []);
-
   return (
     <>
       <Navbar />
 
       <main className="flex-1 w-full">
-        <AnimatePresence mode="wait">
-          {isLoading ? (
-            <motion.div
-              key="skeletons"
-              initial={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              className="w-full space-y-20 pb-20 pt-16"
-            >
-              {/* Pulsing loaders matching section heights */}
-              <HeroSkeleton />
-              
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-                <div className="text-center space-y-4">
-                  <div className="h-4 w-32 bg-slate-200 rounded mx-auto animate-pulse" />
-                  <div className="h-8 w-64 bg-slate-200 rounded mx-auto animate-pulse" />
-                </div>
-                <CountryCardsSkeleton />
-              </div>
-
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-                <div className="text-center space-y-4">
-                  <div className="h-4 w-32 bg-slate-200 rounded mx-auto animate-pulse" />
-                  <div className="h-8 w-64 bg-slate-200 rounded mx-auto animate-pulse" />
-                </div>
-                <ServicesSkeleton />
-              </div>
-
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-                <div className="text-center space-y-4">
-                  <div className="h-4 w-32 bg-slate-200 rounded mx-auto animate-pulse" />
-                  <div className="h-8 w-64 bg-slate-200 rounded mx-auto animate-pulse" />
-                </div>
-                <CardGridSkeleton />
-              </div>
-
-              <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-                <FormSkeleton />
-              </div>
-            </motion.div>
-          ) : (
-            <motion.div
-              key="content"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5 }}
-              className="w-full"
-            >
-              {/* Main Content Sections */}
-              <Hero />
-              <TrustStrip />
-              <CountriesSection />
-              <ServicesSection />
-              <IndustrySection />
-              <HowItWorks />
-              <SplitCTA />
-              <TestimonialsSection />
-              <FAQSection />
-              <LeadForm />
-              <ContactSection />
-            </motion.div>
-          )}
-        </AnimatePresence>
+        <Hero />
+        <TrustStrip />
+        <CountriesSection />
+        <ServicesSection />
+        <IndustrySection />
+        <HowItWorks />
+        <SplitCTA />
+        <TestimonialsSection />
+        <FAQSection />
+        <LeadForm />
+        <ContactSection />
       </main>
 
       <Footer />
