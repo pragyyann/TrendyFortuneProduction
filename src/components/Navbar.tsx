@@ -142,7 +142,7 @@ export function Navbar() {
                     priority
                   />
                 </div>
-                <div className="hidden sm:flex flex-col items-center select-none">
+                <div className="hidden xl:flex flex-col items-center select-none">
                   <span className="font-serif font-extrabold text-base md:text-xl text-[#B8945E] uppercase tracking-wide leading-none" style={{ fontFamily: "'Times New Roman', Times, serif" }}>
                     TRENDY FORTUNE
                   </span>
@@ -154,7 +154,7 @@ export function Navbar() {
             </div>
 
             {/* Desktop Navigation Links */}
-            <nav className="hidden xl:flex items-center gap-4 xl:gap-6 whitespace-nowrap">
+            <nav className="hidden lg:flex items-center gap-4 xl:gap-6 whitespace-nowrap">
               {NAV_LINKS.map((link) => {
                 const hashIndex = link.href.indexOf("#");
                 const id = hashIndex !== -1 ? link.href.substring(hashIndex + 1) : link.href;
@@ -184,18 +184,20 @@ export function Navbar() {
             </nav>
 
             {/* Desktop Actions (Language Switcher + Complete Payment + Apply Now) */}
-            <div className="hidden xl:flex items-center gap-3 xl:gap-4 shrink-0 whitespace-nowrap">
-              <LanguageSwitcher />
+            <div className="hidden lg:flex items-center gap-3 xl:gap-4 shrink-0 whitespace-nowrap">
+              <div className="hidden xl:block">
+                <LanguageSwitcher />
+              </div>
               <a
                 href="/appointment"
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-white/90 border border-white/20 hover:border-white/40 hover:bg-white/10 transition-all duration-300 whitespace-nowrap"
+                className="hidden 2xl:inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-white/90 border border-white/20 hover:border-white/40 hover:bg-white/10 transition-all duration-300 whitespace-nowrap"
               >
                 <Calendar className="h-4 w-4 text-[#B8945E]" />
                 {t("bookAppointment") || "Book Appointment"}
               </a>
               <a
                 href="/pay"
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-[#B8945E] border border-[#B8945E]/30 hover:border-[#B8945E]/60 hover:bg-[#B8945E]/10 transition-all duration-300 whitespace-nowrap"
+                className="hidden 2xl:inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-[#B8945E] border border-[#B8945E]/30 hover:border-[#B8945E]/60 hover:bg-[#B8945E]/10 transition-all duration-300 whitespace-nowrap"
               >
                 <CreditCard className="h-4 w-4" />
                 {t("completePayment")}
@@ -211,11 +213,13 @@ export function Navbar() {
             </div>
 
             {/* Mobile Actions Container (Language Switcher outside Hamburger + Hamburger Toggle) */}
-            <div className="flex xl:hidden items-center gap-1.5 xs:gap-2.5 shrink-0">
-              <LanguageSwitcher isMobileHeader={true} />
+            <div className="flex 2xl:hidden items-center gap-1.5 xs:gap-2.5 shrink-0">
+              <div className="xl:hidden">
+                <LanguageSwitcher isMobileHeader={true} />
+              </div>
               <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="p-1.5 rounded-xl text-white hover:bg-white/10 focus:outline-none cursor-pointer shrink-0 transition-colors"
+                className="p-2.5 rounded-xl text-white hover:bg-white/10 focus:outline-none cursor-pointer shrink-0 transition-colors"
                 aria-expanded={isOpen}
                 aria-label="Toggle navigation menu"
               >
@@ -234,7 +238,7 @@ export function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-x-0 top-[76px] z-30 xl:hidden border-b border-slate-100 bg-white/95 backdrop-blur-lg shadow-xl"
+            className="fixed inset-x-0 top-[76px] z-30 2xl:hidden border-b border-slate-100 bg-white/95 backdrop-blur-lg shadow-xl"
           >
             <div className="px-4 pt-4 pb-8 space-y-6">
               <nav className="flex flex-col gap-4">
