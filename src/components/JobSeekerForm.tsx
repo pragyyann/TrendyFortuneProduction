@@ -177,6 +177,10 @@ export function JobSeekerForm({
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
+    // Clean up query parameters from the URL scroll-free
+    if (typeof window !== "undefined") {
+      window.history.replaceState(null, "", window.location.pathname + window.location.hash);
+    }
   };
 
   const getSuccessWhatsAppLink = (appId: string) => {
@@ -249,7 +253,10 @@ export function JobSeekerForm({
       });
 
       if (applicationId) {
-        router.push(`?success=true&ref=${encodeURIComponent(applicationId)}`, { scroll: false });
+        if (typeof window !== "undefined") {
+          const newUrl = `${window.location.pathname}?success=true&ref=${encodeURIComponent(applicationId)}${window.location.hash}`;
+          window.history.replaceState(null, "", newUrl);
+        }
       }
 
       seekerForm.reset();

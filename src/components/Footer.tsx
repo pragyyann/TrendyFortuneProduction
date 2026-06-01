@@ -75,11 +75,10 @@ export function Footer() {
               </span>
             </a>
             <p className="text-sm text-slate-400 font-sans leading-relaxed max-w-sm">
-              An ISO certified and government registered overseas manpower recruitment consultancy helping businesses hire global talent and guiding job seekers to secure visa placements globally.
+              An overseas manpower recruitment consultancy helping businesses hire global talent and guiding job seekers to secure visa placements globally.
             </p>
             <div className="text-xs text-slate-500 font-medium font-sans">
-              Licence No: B-1209/MUM/COM/1000+/5/9876/2026 <br />
-              (ISO 9001:2015 Certified Agency)
+              Licence No: B-1209/MUM/COM/1000+/5/9876/2026
             </div>
           </div>
 

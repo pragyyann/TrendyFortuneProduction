@@ -116,7 +116,7 @@ export default function RootLayout({
     "@type": "EmploymentAgency",
     "name": "Trendy Fortune",
     "image": "https://www.trendyfortune.com/og-image.jpg",
-    "description": "Government-registered and ISO-certified overseas recruitment agency supplying skilled technical manpower and work permit visa support.",
+    "description": "Overseas recruitment agency supplying skilled technical manpower and work permit visa support.",
     "@id": "https://www.trendyfortune.com/#agency",
     "url": "https://www.trendyfortune.com",
     "telephone": CONTACT_INFO.phone,

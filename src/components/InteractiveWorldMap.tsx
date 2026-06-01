@@ -4,6 +4,8 @@ import * as React from "react";
 import { useTranslations } from "next-intl";
 import DottedMap from "dotted-map";
 import { fetchCountries, Country } from "@/lib/countries";
+import { cn } from "@/lib/utils";
+import { X as CloseIcon } from "lucide-react";
 
 // India origin point (routes radiate from here)
 const INDIA = { lat: 20.5937, lng: 78.9629, name: "India" };
@@ -42,6 +44,7 @@ export function InteractiveWorldMap() {
 
   const [countries, setCountries] = React.useState<Country[]>([]);
   const [loading, setLoading] = React.useState(true);
+  const [selectedCountrySlug, setSelectedCountrySlug] = React.useState<string | null>(null);
 
   React.useEffect(() => {
     let active = true;
@@ -57,6 +60,11 @@ export function InteractiveWorldMap() {
       active = false;
     };
   }, []);
+
+  // Selected Country data computed dynamically
+  const selectedCountry = React.useMemo(() => {
+    return countries.find((c) => c.country_slug === selectedCountrySlug);
+  }, [countries, selectedCountrySlug]);
 
   // Filter countries for map rendering based on active status and coordinates presence
   const mapDots = React.useMemo(() => {
@@ -133,9 +141,17 @@ export function InteractiveWorldMap() {
     }).filter((route): route is { slug: string; endX: number; endY: number } => route !== null);
   }, [mapDots]);
 
+  const handleDotClick = (e: React.MouseEvent<HTMLAnchorElement>, slug: string) => {
+    // On mobile, prevent navigation and show our custom card instead
+    if (window.innerWidth < 1024) {
+      e.preventDefault();
+      setSelectedCountrySlug(slug);
+    }
+  };
+
   return (
     /* ---- FLUID RESPONSIVE CONTAINER ---- */
-    <div className="relative w-full h-full min-h-[160px] xs:min-h-[220px] sm:min-h-[350px] md:min-h-[450px] lg:min-h-[660px] xl:min-h-[720px] flex items-center justify-center transition-all duration-500 overflow-visible" style={{ aspectRatio: "2 / 1" }}>
+    <div className="relative w-full h-full min-h-[160px] xs:min-h-[220px] sm:min-h-[350px] md:min-h-[450px] lg:min-h-[660px] xl:min-h-[720px] flex items-center justify-center transition-all duration-500 overflow-visible mt-8 sm:mt-0" style={{ aspectRatio: "2 / 1" }}>
 
       {/* ═══════════ AMBIENT BACKGROUND GLOW LAYERS ═══════════ */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[45%] w-[110%] h-[110%] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(182,146,91,0.12)_0%,transparent_70%)] pointer-events-none z-0" />
@@ -143,7 +159,7 @@ export function InteractiveWorldMap() {
       <div className="absolute top-[38%] left-[55%] w-[25%] h-[25%] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(16,185,129,0.14)_0%,transparent_70%)] pointer-events-none blur-xl animate-pulse z-0" />
 
       {/* ═══════════ USER INSTRUCTION BADGE ═══════════ */}
-      <div className="absolute top-2 sm:top-4 md:top-6 left-1/2 -translate-x-1/2 z-30 pointer-events-none w-max max-w-[90%] text-center">
+      <div className="absolute top-[-2.5rem] sm:top-4 md:top-6 left-1/2 -translate-x-1/2 z-30 pointer-events-none w-max max-w-[90%] text-center">
         <div className="flex items-center justify-center gap-1.5 sm:gap-2 bg-[#0B192C]/90 backdrop-blur-sm border border-[#B6925B]/40 px-2.5 py-1.5 sm:px-4 sm:py-2 rounded-full shadow-lg">
           <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#B6925B] animate-pulse shrink-0" />
           <span className="text-[9px] sm:text-xs md:text-sm font-sans font-bold tracking-wider text-white uppercase select-none">
@@ -223,6 +239,7 @@ export function InteractiveWorldMap() {
       {/* ═══════════ INTERACTIVE COUNTRY MARKERS ═══════════ */}
       <div className="absolute inset-0 w-full h-full pointer-events-none z-20">
         {mapDots.map((country) => {
+          const isSelected = selectedCountrySlug === country.country_slug;
           return (
             <div
               key={country.country_slug}
@@ -234,6 +251,7 @@ export function InteractiveWorldMap() {
             >
               <a
                 href={`/jobs/${country.country_slug}`}
+                onClick={(e) => handleDotClick(e, country.country_slug)}
                 className="relative flex items-center justify-center w-5 h-5 sm:w-6 sm:h-6 cursor-pointer focus:outline-none pointer-events-auto"
                 aria-label={`View jobs in ${country.country_name}`}
               >
@@ -242,18 +260,29 @@ export function InteractiveWorldMap() {
 
                 {/* Pulsing gold glow ring animation on hover and focus */}
                 <span
-                  className="absolute w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-[#B6925B]/40 opacity-0 group-hover:opacity-100 group-hover:animate-ping group-focus-visible:opacity-100 group-focus-visible:animate-ping pointer-events-none transition-all duration-300"
+                  className={cn(
+                    "absolute w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-[#B6925B]/40 opacity-0 group-hover:opacity-100 group-hover:animate-ping group-focus-visible:opacity-100 group-focus-visible:animate-ping pointer-events-none transition-all duration-300",
+                    isSelected ? "opacity-100 animate-ping" : ""
+                  )}
                   style={{ animationDuration: "1.2s" }}
                 />
 
                 {/* Marker body: navy shell with glowing gold/emerald core */}
-                <span className="relative flex items-center justify-center w-3.5 h-3.5 sm:w-5 sm:h-5 rounded-full bg-[#0B192C] border border-[#B6925B]/40 shadow-[0_0_12px_rgba(182,146,91,0.6)] group-hover:shadow-[0_0_20px_rgba(16,185,129,0.9)] group-hover:scale-[1.3] group-hover:border-[#10B981] group-focus-visible:scale-[1.3] group-focus-visible:border-[#10B981] transition-all duration-250">
-                  <span className="w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-[#B6925B] group-hover:bg-[#10B981] transition-colors duration-200" />
+                <span className={cn(
+                  "relative flex items-center justify-center w-3.5 h-3.5 sm:w-5 sm:h-5 rounded-full bg-[#0B192C] border transition-all duration-250",
+                  isSelected
+                    ? "border-[#10B981] scale-[1.3] shadow-[0_0_20px_rgba(16,185,129,0.9)]"
+                    : "border-[#B6925B]/40 shadow-[0_0_12px_rgba(182,146,91,0.6)] group-hover:shadow-[0_0_20px_rgba(16,185,129,0.9)] group-hover:scale-[1.3] group-hover:border-[#10B981] group-focus-visible:scale-[1.3] group-focus-visible:border-[#10B981]"
+                )}>
+                  <span className={cn(
+                    "w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full transition-colors duration-200",
+                    isSelected ? "bg-[#10B981]" : "bg-[#B6925B] group-hover:bg-[#10B981]"
+                  )} />
                 </span>
 
                 {/* ── Premium Frosted Glass Tooltip Card (country name, flag and gold clickable button) ── */}
                 {/* Pointer events are set to none by default to completely prevent distant hover triggering. It is set to auto only when hovered or focused. */}
-                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3.5 w-max min-w-[150px] sm:min-w-[170px] opacity-0 scale-95 origin-bottom translate-y-1.5 group-hover:opacity-100 group-hover:translate-y-0 group-hover:scale-100 group-focus-within:opacity-100 group-focus-within:translate-y-0 group-focus-within:scale-100 transition-all duration-200 z-[999] pointer-events-none group-hover:pointer-events-auto group-focus-within:pointer-events-auto">
+                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3.5 w-max min-w-[150px] sm:min-w-[170px] opacity-0 scale-95 origin-bottom translate-y-1.5 group-hover:opacity-100 group-hover:translate-y-0 group-hover:scale-100 group-focus-within:opacity-100 group-focus-within:translate-y-0 group-focus-within:scale-100 transition-all duration-200 z-[999] pointer-events-none group-hover:pointer-events-auto group-focus-within:pointer-events-auto hidden lg:block">
                   <div className="bg-[#0B192C] text-white py-3 px-4 rounded-2xl shadow-[0_10px_30px_rgba(11,25,44,0.45)] border border-[#B6925B]/40 flex flex-col items-center gap-2">
                     {/* Flag and Name Row */}
                     <div className="flex items-center gap-2">
@@ -280,6 +309,41 @@ export function InteractiveWorldMap() {
         })}
       </div>
 
+      {/* ═══════════ MOBILE / TABLET COUNTRY PREVIEW CARD ═══════════ */}
+      {selectedCountry && (
+        <div className="absolute bottom-[-1.5rem] left-1/2 -translate-x-1/2 w-[90%] xs:w-[280px] sm:w-[320px] bg-[#0B192C] text-white py-3.5 px-4 rounded-2xl shadow-[0_12px_36px_rgba(11,25,44,0.6)] border border-[#B6925B] flex flex-col gap-2.5 z-40 lg:hidden animate-in fade-in slide-in-from-bottom-2 duration-200 pointer-events-auto">
+          <button 
+            onClick={() => setSelectedCountrySlug(null)}
+            className="absolute top-2.5 right-2.5 p-1 rounded-full text-white/75 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+            aria-label="Close preview"
+          >
+            <CloseIcon className="h-4 w-4" />
+          </button>
+          
+          <div className="flex items-center gap-2.5 pr-6">
+            <span className="text-2xl select-none leading-none" role="img" aria-label={`${selectedCountry.country_name} Flag`}>
+              {getFlagEmoji(selectedCountry.country_code)}
+            </span>
+            <div className="flex flex-col">
+              <span className="font-display font-extrabold text-[15px] sm:text-[16px] tracking-tight leading-none text-[#B6925B]">
+                {selectedCountry.country_name}
+              </span>
+              <span className="text-[10px] sm:text-xs text-white/60 mt-1 uppercase tracking-wider font-semibold">
+                Available Jobs
+              </span>
+            </div>
+          </div>
+
+          <a
+            href={`/jobs/${selectedCountry.country_slug}`}
+            className="w-full h-10 px-4 rounded-xl bg-[#B6925B] hover:bg-[#A37F48] active:scale-[0.98] text-[#0B192C] font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow-lg shadow-[#B6925B]/20 transition-all duration-200"
+          >
+            <span>{viewJobsText}</span>
+            <span className="text-sm font-sans">→</span>
+          </a>
+        </div>
+      )}
+
       {/* ═══════════ KEYFRAME ANIMATIONS ═══════════ */}
       <style dangerouslySetInnerHTML={{ __html: `
         @keyframes heroRouteShimmer {
@@ -293,4 +357,3 @@ export function InteractiveWorldMap() {
     </div>
   );
 }
-

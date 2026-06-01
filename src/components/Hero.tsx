@@ -17,7 +17,7 @@ export function Hero() {
     const targetId = formType === "seeker" ? "job-seeker" : "employer";
     const element = document.getElementById(targetId);
     if (element) {
-      const offset = 80;
+      const offset = window.innerWidth >= 1024 ? 120 : 80;
       const bodyRect = document.body.getBoundingClientRect().top;
       const elementRect = element.getBoundingClientRect().top;
       const elementPosition = elementRect - bodyRect;
@@ -48,12 +48,6 @@ export function Hero() {
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="w-full bg-white/80 border border-white/60 shadow-[0_24px_50px_rgba(148,163,184,0.06)] rounded-[1.5rem] xs:rounded-[2rem] sm:rounded-[2.5rem] p-4 xs:p-6 sm:p-8 md:p-10 space-y-4 sm:space-y-6 relative z-10 max-w-full"
           >
-            {/* Tagline */}
-            <div className="hidden sm:inline-flex items-center gap-2 bg-[#FAFAF7] border border-[#B6925B]/30 px-4 py-1.5 rounded-full text-sm font-semibold text-[#071426] shadow-sm">
-              <span className="flex h-2.5 w-2.5 rounded-full bg-[#10B981] animate-pulse" />
-              {t("badge")}
-            </div>
-
             {/* Headline */}
             <h1 className="text-[32px] xs:text-4xl sm:text-5xl lg:text-[2.6rem] xl:text-[2.85rem] font-display font-extrabold text-[#071426] leading-tight tracking-tight">
               {t("title")}

@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Menu, X, ArrowUpRight, CreditCard, Calendar, ChevronDown } from "lucide-react";
+import { Menu, X, ArrowUpRight, CreditCard, Calendar } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { NAV_LINKS } from "@/constants";
@@ -17,8 +17,6 @@ export function Navbar() {
   const [isOpen, setIsOpen] = React.useState(false);
   const [scrolled, setScrolled] = React.useState(false);
   const [activeSection, setActiveSection] = React.useState("home");
-  const [isMoreOpen, setIsMoreOpen] = React.useState(false);
-  const moreDropdownRef = React.useRef<HTMLDivElement>(null);
 
   const isJobPage = pathname?.startsWith("/jobs");
   const currentActiveSection = isJobPage ? "jobs-abroad" : activeSection;
@@ -63,17 +61,6 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [isJobPage]);
 
-  // Close More dropdown on click outside
-  React.useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (moreDropdownRef.current && !moreDropdownRef.current.contains(event.target as Node)) {
-        setIsMoreOpen(false);
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
   // Smooth scroll handler
   const handleScrollTo = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     // If not on homepage or not an anchor link, let the normal link navigation handle it
@@ -91,7 +78,7 @@ export function Navbar() {
     const element = targetId ? document.getElementById(targetId) : null;
 
     if (element) {
-      const offset = 80; // Adjust for sticky navbar height
+      const offset = window.innerWidth >= 1024 ? 120 : 80; // Adjust for sticky two-row navbar height
       const bodyRect = document.body.getBoundingClientRect().top;
       const elementRect = element.getBoundingClientRect().top;
       const elementPosition = elementRect - bodyRect;
@@ -116,7 +103,7 @@ export function Navbar() {
     }
     const element = document.getElementById("job-seeker");
     if (element) {
-      const offset = 80;
+      const offset = window.innerWidth >= 1024 ? 120 : 80;
       const bodyRect = document.body.getBoundingClientRect().top;
       const elementRect = element.getBoundingClientRect().top;
       const elementPosition = elementRect - bodyRect;
@@ -134,10 +121,15 @@ export function Navbar() {
   return (
     <>
       <header
-        className="fixed top-0 left-0 right-0 z-50 w-full bg-[#0B192C] border-b border-[#B8945E]/20 py-4 shadow-sm overflow-x-hidden"
+        className={cn(
+          "fixed top-0 left-0 right-0 z-50 w-full bg-[#0B192C] border-b border-[#B8945E]/20 shadow-sm transition-all duration-300",
+          scrolled ? "bg-[#0B192C]/98 backdrop-blur-md" : "bg-[#0B192C]"
+        )}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between gap-3 lg:gap-4 2xl:gap-6 min-w-0">
+        {/* --- DESKTOP TWO-ROW NAVBAR (lg and above) --- */}
+        <div className="hidden lg:flex flex-col w-full">
+          {/* Top Row: Height 68px */}
+          <div className="h-[68px] flex items-center justify-between max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
             {/* Logo Group */}
             <div className="flex items-center shrink-0">
               <a
@@ -145,29 +137,53 @@ export function Navbar() {
                 onClick={(e) => handleScrollTo(e, "/#home")}
                 className="flex items-center gap-3 group focus:outline-none"
               >
-                <div className="relative h-10 w-10 sm:h-12 sm:w-12 lg:h-12 lg:w-12 2xl:h-16 2xl:w-16 group-hover:scale-105 transition-transform flex items-center justify-center shrink-0">
+                <div className="relative h-11 w-11 group-hover:scale-105 transition-transform flex items-center justify-center shrink-0">
                   <Image
                     src="/images/Untitled design (2).png"
                     alt="Trendy Fortune Overseas logo"
                     fill
-                    sizes="(max-width: 768px) 40px, 64px"
+                    sizes="44px"
                     className="object-contain"
                     priority
                   />
                 </div>
-                <div className="hidden 2xl:flex flex-col items-center select-none">
-                  <span className="font-serif font-extrabold text-base md:text-xl text-[#B8945E] uppercase tracking-wide leading-none" style={{ fontFamily: "'Times New Roman', Times, serif" }}>
+                <div className="flex flex-col items-start select-none">
+                  <span className="font-serif font-extrabold text-base lg:text-[17px] text-[#B8945E] uppercase tracking-wide leading-none" style={{ fontFamily: "'Times New Roman', Times, serif" }}>
                     TRENDY FORTUNE
                   </span>
-                  <span className="font-serif text-[9px] md:text-xs text-[#B8945E] uppercase tracking-[0.18em] text-center leading-none mt-1" style={{ fontFamily: "'Times New Roman', Times, serif" }}>
+                  <span className="font-serif text-[10px] lg:text-[11px] text-[#B8945E] uppercase tracking-[0.18em] text-center leading-none mt-1.5" style={{ fontFamily: "'Times New Roman', Times, serif" }}>
                     OVERSEAS
                   </span>
                 </div>
               </a>
             </div>
 
-            {/* Desktop Navigation Links */}
-            <nav className="hidden lg:flex items-center gap-1.5 xl:gap-2.5 2xl:gap-5 whitespace-nowrap min-w-0">
+            {/* Actions: Language Switcher + Book Appointment + Apply Now */}
+            <div className="flex items-center gap-4 shrink-0 whitespace-nowrap">
+              <LanguageSwitcher />
+              
+              <a
+                href="/appointment"
+                className="inline-flex items-center gap-2 h-10 px-4 rounded-xl text-sm font-semibold text-white bg-transparent border border-[#B8945E]/50 hover:border-[#B8945E] hover:bg-white/5 transition-all duration-300 whitespace-nowrap"
+              >
+                <Calendar className="h-4 w-4 text-[#B8945E]" />
+                {t("bookAppointment") || "Book Appointment"}
+              </a>
+
+              <Button
+                onClick={handleApplyClick}
+                variant="primary"
+                className="gap-1.5 group h-10 px-5 whitespace-nowrap bg-[#B8945E] text-[#071426] hover:bg-[#A37F48] hover:shadow-[0_0_15px_rgba(184,148,94,0.35)] hover:-translate-y-0.5 transition-all duration-300 border border-white/10 font-bold text-sm"
+              >
+                {t("applyNow")}
+                <ArrowUpRight className="h-4 w-4 text-[#071426] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+              </Button>
+            </div>
+          </div>
+
+          {/* Bottom Row: Height 48px */}
+          <div className="h-[48px] border-t border-[#B8945E]/15 flex items-center justify-center w-full">
+            <nav className="flex items-center gap-6 xl:gap-8 justify-center whitespace-nowrap min-w-0">
               {NAV_LINKS.map((link) => {
                 const hashIndex = link.href.indexOf("#");
                 const id = hashIndex !== -1 ? link.href.substring(hashIndex + 1) : link.href;
@@ -179,7 +195,7 @@ export function Navbar() {
                     href={link.href}
                     onClick={(e) => handleScrollTo(e, link.href)}
                     className={cn(
-                      "text-[13px] xl:text-sm 2xl:text-base font-medium transition-colors hover:text-[#B8945E] relative py-2 focus:outline-none whitespace-nowrap",
+                      "text-[13px] xl:text-sm font-medium transition-colors hover:text-[#B8945E] relative py-1 focus:outline-none whitespace-nowrap",
                       isActive ? "text-[#B8945E] font-semibold" : "text-white/85"
                     )}
                   >
@@ -187,106 +203,79 @@ export function Navbar() {
                     {isActive && (
                       <motion.div
                         layoutId="activeNavIndicator"
-                        className="absolute bottom-[-2px] left-0 right-0 h-0.5 bg-[#B8945E]"
+                        className="absolute bottom-[-6px] left-0 right-0 h-0.5 bg-[#B8945E]"
                         transition={{ type: "spring", stiffness: 380, damping: 30 }}
                       />
                     )}
                   </a>
                 );
               })}
-            </nav>
 
-            {/* Desktop Actions (Language Switcher + Complete Payment + Apply Now) */}
-            <div className="hidden lg:flex items-center gap-2 xl:gap-2.5 2xl:gap-3.5 shrink-0 whitespace-nowrap">
-              {/* More Dropdown (visible strictly between 1024px and 1439px) */}
-              <div className="hidden lg:block 2xl:hidden relative" ref={moreDropdownRef}>
-                <button
-                  onClick={() => setIsMoreOpen(!isMoreOpen)}
-                  type="button"
-                  className="inline-flex items-center justify-center gap-2 h-11 px-4 rounded-xl border border-white/20 hover:border-white/40 bg-white/5 hover:bg-white/10 text-white font-semibold hover:shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#B8945E] transition-all cursor-pointer whitespace-nowrap text-sm"
-                  aria-haspopup="true"
-                  aria-expanded={isMoreOpen}
-                  aria-label="More navigation links"
-                >
-                  <span>{t("more") || "More"}</span>
-                  <ChevronDown className={cn("h-4 w-4 text-slate-400 transition-transform duration-200", isMoreOpen ? "transform rotate-180" : "")} />
-                </button>
-
-                {isMoreOpen && (
-                  <div className="absolute right-0 mt-2 w-64 rounded-xl bg-white shadow-xl border border-slate-100 ring-1 ring-black/5 z-50 p-3 space-y-3 transform origin-top-right transition-all duration-200">
-                    <div className="bg-slate-50 px-3 py-1.5 rounded-lg text-[10px] font-bold text-slate-400 uppercase tracking-wider font-sans">
-                      More Actions
-                    </div>
-                    
-                    {/* Language Switcher Nested */}
-                    <div className="w-full">
-                      <LanguageSwitcher isDropdown={true} />
-                    </div>
-
-                    {/* Book Appointment Nested */}
-                    <a
-                      href="/appointment"
-                      onClick={() => setIsMoreOpen(false)}
-                      className="w-full flex items-center gap-2.5 px-4 py-3 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-50 border border-slate-100 transition-all duration-200 whitespace-nowrap"
-                    >
-                      <Calendar className="h-4 w-4 text-[#B8945E] shrink-0" />
-                      <span className="truncate">{t("bookAppointment") || "Book Appointment"}</span>
-                    </a>
-
-                    {/* Complete Payment Nested */}
-                    <a
-                      href="/pay"
-                      onClick={() => setIsMoreOpen(false)}
-                      className="w-full flex items-center gap-2.5 px-4 py-3 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-50 border border-slate-100 transition-all duration-200 whitespace-nowrap"
-                    >
-                      <CreditCard className="h-4 w-4 text-[#B8945E] shrink-0" />
-                      <span className="truncate">{t("completePayment") || "Complete Payment"}</span>
-                    </a>
-                  </div>
-                )}
-              </div>
-
-              <div className="hidden 2xl:block">
-                <LanguageSwitcher />
-              </div>
-              <a
-                href="/appointment"
-                className="hidden 2xl:inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-white/90 border border-white/20 hover:border-white/40 hover:bg-white/10 transition-all duration-300 whitespace-nowrap"
-              >
-                <Calendar className="h-4 w-4 text-[#B8945E]" />
-                {t("bookAppointment") || "Book Appointment"}
-              </a>
+              {/* Complete Payment Centered Navigation Link */}
               <a
                 href="/pay"
-                className="hidden 2xl:inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-[#B8945E] border border-[#B8945E]/30 hover:border-[#B8945E]/60 hover:bg-[#B8945E]/10 transition-all duration-300 whitespace-nowrap"
+                className={cn(
+                  "text-[13px] xl:text-sm font-medium transition-colors hover:text-[#B8945E] relative py-1 focus:outline-none whitespace-nowrap flex items-center gap-1.5",
+                  currentActiveSection === "pay" || pathname === "/pay" ? "text-[#B8945E] font-semibold" : "text-white/85"
+                )}
               >
-                <CreditCard className="h-4 w-4" />
-                {t("completePayment")}
+                <CreditCard className="h-3.5 w-3.5" />
+                {t("completePayment") || "Complete Payment"}
+                {(currentActiveSection === "pay" || pathname === "/pay") && (
+                  <motion.div
+                    layoutId="activeNavIndicator"
+                    className="absolute bottom-[-6px] left-0 right-0 h-0.5 bg-[#B8945E]"
+                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                  />
+                )}
               </a>
-              <Button
-                onClick={handleApplyClick}
-                variant="primary"
-                className="gap-1.5 group px-3.5 py-2 2xl:gap-2 2xl:px-5 2xl:py-2.5 whitespace-nowrap bg-[#B8945E] text-[#071426] hover:bg-[#A37F48] hover:shadow-[0_0_15px_rgba(184,148,94,0.35)] hover:-translate-y-0.5 transition-all duration-300 border border-white/10 font-bold text-sm 2xl:text-base"
-              >
-                {t("applyNow")}
-                <ArrowUpRight className="h-4 w-4 text-[#071426] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-              </Button>
-            </div>
+            </nav>
+          </div>
+        </div>
 
-            {/* Mobile Actions Container (Language Switcher outside Hamburger + Hamburger Toggle) */}
-            <div className="flex lg:hidden items-center gap-1.5 xs:gap-2.5 shrink-0">
-              <div>
-                <LanguageSwitcher isMobileHeader={true} />
+        {/* --- MOBILE NAVBAR (below lg) --- */}
+        <div className="lg:hidden flex items-center justify-between h-16 max-w-7xl mx-auto px-4 sm:px-6 w-full min-w-0">
+          {/* Logo Group */}
+          <div className="flex items-center shrink-0 min-w-0 mr-2">
+            <a
+              href="/#home"
+              onClick={(e) => handleScrollTo(e, "/#home")}
+              className="flex items-center gap-2 xs:gap-3 group focus:outline-none min-w-0"
+            >
+              <div className="relative h-9 w-9 xs:h-10 xs:w-10 group-hover:scale-105 transition-transform flex items-center justify-center shrink-0">
+                <Image
+                  src="/images/Untitled design (2).png"
+                  alt="Trendy Fortune Overseas logo"
+                  fill
+                  sizes="(max-width: 479px) 36px, 40px"
+                  className="object-contain"
+                  priority
+                />
               </div>
-              <button
-                onClick={() => setIsOpen(!isOpen)}
-                className="p-2.5 rounded-xl text-white hover:bg-white/10 focus:outline-none cursor-pointer shrink-0 transition-colors"
-                aria-expanded={isOpen}
-                aria-label="Toggle navigation menu"
-              >
-                {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-              </button>
+              <div className="flex flex-col items-start select-none min-w-0">
+                <span className="font-serif font-extrabold text-[10.5px] xs:text-[12px] sm:text-[14px] text-[#B8945E] uppercase tracking-wide leading-none truncate" style={{ fontFamily: "'Times New Roman', Times, serif" }}>
+                  TRENDY FORTUNE
+                </span>
+                <span className="font-serif text-[7.5px] xs:text-[8px] sm:text-[9.5px] text-[#B8945E] uppercase tracking-[0.18em] text-center leading-none mt-1 sm:mt-1.5 truncate" style={{ fontFamily: "'Times New Roman', Times, serif" }}>
+                  OVERSEAS
+                </span>
+              </div>
+            </a>
+          </div>
+
+          {/* Mobile Right Controls: LanguageSwitcher (Mobile Header style) + Hamburger Toggle */}
+          <div className="flex items-center gap-1.5 xs:gap-2 shrink-0">
+            <div>
+              <LanguageSwitcher isMobileHeader={true} />
             </div>
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="p-2 rounded-xl text-white hover:bg-white/10 focus:outline-none cursor-pointer shrink-0 transition-colors"
+              aria-expanded={isOpen}
+              aria-label="Toggle navigation menu"
+            >
+              {isOpen ? <X className="h-5 w-5 xs:h-6 xs:w-6" /> : <Menu className="h-5 w-5 xs:h-6 xs:w-6" />}
+            </button>
           </div>
         </div>
       </header>
@@ -299,10 +288,10 @@ export function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-x-0 top-[76px] z-30 lg:hidden border-b border-slate-100 bg-white/95 backdrop-blur-lg shadow-xl"
+            className="fixed inset-x-0 top-[64px] z-30 lg:hidden border-b border-slate-100 bg-white/95 backdrop-blur-lg shadow-xl"
           >
             <div className="px-4 pt-4 pb-8 space-y-6">
-              <nav className="flex flex-col gap-4">
+              <nav className="flex flex-col gap-2">
                 {NAV_LINKS.map((link) => {
                   const hashIndex = link.href.indexOf("#");
                   const id = hashIndex !== -1 ? link.href.substring(hashIndex + 1) : link.href;
@@ -314,7 +303,7 @@ export function Navbar() {
                       href={link.href}
                       onClick={(e) => handleScrollTo(e, link.href)}
                       className={cn(
-                        "text-lg font-medium px-4 py-2.5 rounded-xl transition-colors",
+                        "text-base font-medium px-4 py-2.5 rounded-xl transition-colors",
                         isActive
                           ? "bg-slate-50 text-[#B6925B] font-semibold"
                           : "text-slate-600 hover:bg-slate-50 hover:text-[#0B192C]"
@@ -324,9 +313,26 @@ export function Navbar() {
                     </a>
                   );
                 })}
+
+                {/* Complete Payment Mobile Link */}
+                <a
+                  href="/pay"
+                  onClick={() => setIsOpen(false)}
+                  className={cn(
+                    "text-base font-medium px-4 py-2.5 rounded-xl transition-colors flex items-center gap-2.5",
+                    currentActiveSection === "pay" || pathname === "/pay"
+                      ? "bg-slate-50 text-[#B6925B] font-semibold"
+                      : "text-slate-600 hover:bg-slate-50 hover:text-[#0B192C]"
+                  )}
+                >
+                  <CreditCard className="h-4 w-4 text-[#B8945E]" />
+                  <span>{t("completePayment") || "Complete Payment"}</span>
+                </a>
               </nav>
+              
               <div className="px-4 pt-4 border-t border-slate-100 flex flex-col gap-3">
                 <LanguageSwitcher isMobile={true} />
+                
                 <a
                   href="/appointment"
                   onClick={() => setIsOpen(false)}
@@ -335,15 +341,8 @@ export function Navbar() {
                   <Calendar className="h-4 w-4 text-[#B8945E]" />
                   {t("bookAppointment") || "Book Appointment"}
                 </a>
-                <a
-                  href="/pay"
-                  onClick={() => setIsOpen(false)}
-                  className="w-full flex items-center justify-center gap-2 h-11 rounded-xl text-sm font-semibold text-[#0B192C] border-2 border-[#B8945E]/40 hover:border-[#B8945E] hover:bg-[#B8945E]/5 transition-all"
-                >
-                  <CreditCard className="h-4 w-4 text-[#B8945E]" />
-                  {t("completePayment")}
-                </a>
-                <Button onClick={handleApplyClick} variant="primary" className="w-full justify-center">
+                
+                <Button onClick={handleApplyClick} variant="primary" className="w-full justify-center bg-[#B8945E] text-[#071426] hover:bg-[#A37F48] font-bold h-11 rounded-xl border border-white/10">
                   {t("applyNow")}
                 </Button>
               </div>
